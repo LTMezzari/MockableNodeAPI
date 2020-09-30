@@ -1,0 +1,16 @@
+{
+  "name": "mockable-node-api",
+  "version": "0.0.0",
+  "description": "MockableNodeAPI",
+  "main": "app.js",
+  "author": {
+    "name": "Lucas T. Mezzari"
+  },
+  "scripts": {
+    "start": "node src/App.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^18.0.1"
+  }
+}
