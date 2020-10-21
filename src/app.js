@@ -66,7 +66,7 @@ const init = async () => {
                     );
 
                     if (current && current.active)
-                        return route.response;
+                        return current.response;
 
                     return r.response({
                         statusCode: 404,
