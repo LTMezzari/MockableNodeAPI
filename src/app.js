@@ -3,19 +3,18 @@ const PORT = 3000;
 const Hapi = require("@hapi/hapi");
 
 const server = Hapi.server({
-    port: PORT
+    port: PORT,
+    routes: {
+        cors: {
+            origin: 'ignore'
+        }
+    }
 });
 
 const routes = [];
 let index = 0;
 
 const init = async () => {
-    server.ext('onPreResponse', (request, reply) => {
-        if (request.response.header)
-            request.response.header('Access-Control-Allow-Origin', '*');
-        return reply.continue;
-    });
-
     server.route({
         method: 'POST',
         path: '/ws/route',
@@ -28,8 +27,8 @@ const init = async () => {
                 response: request.payload.response
             };
 
-            const old = routes.find((r) => 
-                r.path === route.path 
+            const old = routes.find((r) =>
+                r.path === route.path
                 && r.method === route.method
             )
             if (old && old.active) {
@@ -61,14 +60,14 @@ const init = async () => {
                 method: route.method,
                 path: route.path,
                 handler: function (_, r) {
-                    const current = routes.find((r) => 
-                        r.path === route.path 
+                    const current = routes.find((r) =>
+                        r.path === route.path
                         && r.method === route.method
                     );
 
-                    if (current && current.active) 
+                    if (current && current.active)
                         return route.response;
-                    
+
                     return r.response({
                         statusCode: 404,
                         error: 'Not Found',
@@ -91,7 +90,7 @@ const init = async () => {
             return {
                 code: 200,
                 success: true,
-                data: routes
+                data: routes.filter((r) => r.active)
             };
         }
     });
@@ -99,16 +98,17 @@ const init = async () => {
     server.route({
         method: 'GET',
         path: '/ws/route/{id}',
-        handler: (_, r) => {
-            const route = routes.find((r) => r.id === route.id);
+        handler: (request, r) => {
+            const route = routes.find((r) => r.id == request.params.id);
 
-            if (route) 
+            if (route && route.active) {
                 return {
                     code: 200,
                     success: true,
                     data: route
                 };
-            
+            }
+
             return r.response({
                 statusCode: 404,
                 error: 'Not Found',
@@ -163,7 +163,7 @@ const init = async () => {
         method: 'DELETE',
         path: '/ws/route/{id}',
         handler: (request, reply) => {
-            const route = routes.find((r) => r.id === request.params.id);
+            const route = routes.find((r) => r.id == request.params.id);
 
             if (route) {
                 const index = routes.indexOf(route);
@@ -171,13 +171,13 @@ const init = async () => {
                     ...route,
                     active: false
                 };
-                
+
                 return {
                     code: 200,
                     success: true
                 };
             }
-            
+
             return reply.response({
                 statusCode: 404,
                 error: 'Not Found',
