@@ -44,7 +44,7 @@ const init = async () => {
                 const index = routes.indexOf(old);
                 routes[index] = {
                     ...old,
-                    id: route.response,
+                    id: route.id,
                     response: route.response,
                     active: true
                 };
@@ -148,7 +148,7 @@ const init = async () => {
             const index = routes.indexOf(old);
             routes[index] = {
                 ...old,
-                id: route.response,
+                id: route.id,
                 response: route.response
             };
 
