@@ -128,7 +128,7 @@ const init = async () => {
                 response: request.payload.response
             };
 
-            const old = routes.find((r) => r.id === route.id);
+            const old = routes.find((r) => r.id == route.id);
             if (!old) {
                 return reply.response({
                     code: 404,
