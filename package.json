@@ -7,10 +7,13 @@
     "name": "Lucas T. Mezzari"
   },
   "scripts": {
-    "start": "node src/App.js"
+    "build": "tsc"
   },
   "license": "ISC",
   "dependencies": {
-    "@hapi/hapi": "^18.0.1"
+    "@hapi/hapi": "^20.1.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.2.4"
   }
 }
