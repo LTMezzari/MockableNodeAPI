@@ -25,7 +25,7 @@ export default class DefaultRepository implements IRouteRepository {
             const index = this.routes.indexOf(old);
             route.id = index;
             this.routes[index] = route;
-            return true;
+            return false;
         }
 
         route.id = this.index;
@@ -35,7 +35,7 @@ export default class DefaultRepository implements IRouteRepository {
     }
 
     putRoute(route: Route): boolean {
-        const old = this.routes.find((r) => r.id == route.id);
+        const old = this.routes.find((r) => r.id == route.id && r.active);
         if (!old) {
             return false;
         }
@@ -45,17 +45,12 @@ export default class DefaultRepository implements IRouteRepository {
         }
 
         const index = this.routes.indexOf(old);
-        this.routes[index] = {
-            ...old,
-            id: route.id,
-            response: route.response,
-            isActive: old.isActive,
-        };
+        this.routes[index] = route;
         return true;
     }
 
     deleteRoute(identifier: any): boolean {
-        const route = this.routes.find((r) => r.id == identifier);
+        const route = this.routes.find((r) => r.id == identifier && r.active);
 
         if (route) {
             const index = this.routes.indexOf(route);
@@ -76,9 +71,5 @@ export default class DefaultRepository implements IRouteRepository {
 
     getRoutes(): IRoute[] {
         return this.routes.filter((r) => r.active) ?? [];
-    }
-
-    find(predicate: (route: IRoute) => boolean): IRoute | null {
-        return this.routes.find(predicate)
     }
 }

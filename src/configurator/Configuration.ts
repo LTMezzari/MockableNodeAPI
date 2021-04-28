@@ -4,6 +4,7 @@ import IRouteRepository from '../repository/IRouteRepository';
 
 import DefaultHandler from '../handler/DefaultHandler';
 import DefaultRepository from '../repository/DefaultRepository';
+import DefaultFactory from '../factory/DefaultFactory';
 
 class Configuration {
     factory: IRouteFactory;
@@ -20,6 +21,7 @@ export class Builder {
         this.configuration = new Configuration();
         this.configuration.handler = new DefaultHandler();
         this.configuration.repository = new DefaultRepository();
+        this.configuration.factory = new DefaultFactory();
     }
 
     setFactory(factory: IRouteFactory): Builder {

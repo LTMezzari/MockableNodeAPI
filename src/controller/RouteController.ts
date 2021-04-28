@@ -13,7 +13,9 @@ export default class RouteController implements IRouteController {
         try {
             const route = this.configuration.factory.createRoute(request);
             const result = this.configuration.repository.addRoute(route);
-            this.configuration.handler.registerRoute(route, this.configuration.repository.getRoutes(), server);
+            if (result) {
+                this.configuration.handler.registerRoute(route, this.configuration.repository, server);
+            }
 
             return reply.response({
                 code: 201,
@@ -21,7 +23,7 @@ export default class RouteController implements IRouteController {
                 data: route,
             }).code(201);
         } catch (error: any) {
-            this.dispatchError(error, reply);
+            return this.dispatchError(error, reply);
         }
     }
 
@@ -33,7 +35,7 @@ export default class RouteController implements IRouteController {
                 data: this.configuration.repository.getRoutes()
             }).code(200);
         } catch (error: any) {
-            this.dispatchError(error, reply);
+            return this.dispatchError(error, reply);
         }
 
     }
@@ -55,7 +57,7 @@ export default class RouteController implements IRouteController {
                 data: route
             }).code(200);
         } catch (error: any) {
-            this.dispatchError(error, reply);
+            return this.dispatchError(error, reply);
         }
     }
 
@@ -76,7 +78,7 @@ export default class RouteController implements IRouteController {
                 data: route,
             }).code(200);
         } catch (error: any) {
-            this.dispatchError(error, reply);
+            return this.dispatchError(error, reply);
         }
     }
 
@@ -96,7 +98,7 @@ export default class RouteController implements IRouteController {
                 success: result
             }).code(200);
         } catch (error: any) {
-            this.dispatchError(error, reply);
+            return this.dispatchError(error, reply);
         }
     }
 

@@ -6,7 +6,7 @@ export const ReservedRoutes = {
     GetUpdateDelete: '/ws/route/{id}',
 };
 
-export function routeApplication(server: any, controller: IRouteController) {
+export default function routeApplication(server: any, controller: IRouteController) {
     server.route({
         method: 'POST',
         path: ReservedRoutes.Create,
@@ -16,24 +16,24 @@ export function routeApplication(server: any, controller: IRouteController) {
     server.route({
         method: 'GET',
         path: ReservedRoutes.List,
-        handler: controller.getRoutes,
+        handler: (request: any, reply: any) => controller.getRoutes(request, reply),
     });
 
     server.route({
         method: 'GET',
         path: ReservedRoutes.GetUpdateDelete,
-        handler: controller.getRoute,
+        handler: (request: any, reply: any) => controller.getRoute(request, reply),
     });
 
     server.route({
         method: 'PUT',
         path: ReservedRoutes.GetUpdateDelete,
-        handler: controller.putRoute,
+        handler: (request: any, reply: any) => controller.putRoute(request, reply),
     });
 
     server.route({
         method: 'DELETE',
         path: ReservedRoutes.GetUpdateDelete,
-        handler: controller.deleteRoute,
+        handler: (request: any, reply: any) => controller.deleteRoute(request, reply),
     });
 }

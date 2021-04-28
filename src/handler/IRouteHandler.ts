@@ -1,6 +1,6 @@
 import IRoute from '../model/IRoute';
-import Configuration from '../configurator/Configuration';
+import IRouteRepository from '../repository/IRouteRepository';
 
 export default interface IRouteHandler {
-    registerRoute: (route: IRoute, routes: IRoute[], server: any) => void;
+    registerRoute: (route: IRoute, repository: IRouteRepository, server: any) => void;
 }

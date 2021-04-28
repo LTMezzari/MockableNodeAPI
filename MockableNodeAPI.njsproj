@@ -7,6 +7,7 @@
     <EnableTypeScript>true</EnableTypeScript>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -14,7 +15,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>963d5a10-9e6c-4232-9c9d-35df917525b6</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>src\App.js</StartupFile>
+    <StartupFile>build/app.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -22,7 +23,7 @@
     <OutputPath>.</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
-    <StartWebBrowser>false</StartWebBrowser>
+    <StartWebBrowser>False</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +32,20 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="src\App.js" />
+    <Content Include="build\app.js" />
+    <Content Include="build\configurator\Configuration.js" />
+    <Content Include="build\controller\IRouteController.js" />
+    <Content Include="build\controller\RouteController.js" />
+    <Content Include="build\controller\RoutesController.js" />
+    <Content Include="build\factory\DefaultFactory.js" />
+    <Content Include="build\factory\IRouteFactory.js" />
+    <Content Include="build\handler\DefaultHandler.js" />
+    <Content Include="build\handler\IRouteHandler.js" />
+    <Content Include="build\model\IRoute.js" />
+    <Content Include="build\model\Route.js" />
+    <Content Include="build\repository\DefaultRepository.js" />
+    <Content Include="build\repository\IRouteRepository.js" />
+    <Content Include="build\router\ApplicationRouter.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="src\configurator\Configuration.ts">
@@ -45,6 +59,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="%40types\" />
+    <Folder Include="build\" />
+    <Folder Include="build\configurator\" />
+    <Folder Include="build\controller\" />
+    <Folder Include="build\factory\" />
+    <Folder Include="build\handler\" />
+    <Folder Include="build\model\" />
+    <Folder Include="build\repository\" />
+    <Folder Include="build\router\" />
     <Folder Include="src\" />
     <Folder Include="src\controller\" />
     <Folder Include="src\model\" />
@@ -55,6 +78,9 @@
     <Folder Include="src\router\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\App.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\controller\IRouteController.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -83,6 +109,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\router\ApplicationRouter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="%40types\index.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

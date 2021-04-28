@@ -11,6 +11,4 @@ export default interface IRouteRepository {
     getRoute: (identifier: any) => IRoute | null;
 
     getRoutes: () => IRoute[];
-
-    find: (predicate: (route: IRoute) => boolean) => IRoute | null;
 }
