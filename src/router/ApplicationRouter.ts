@@ -1,3 +1,4 @@
+import Configuration from "../configurator/Configuration";
 import IRouteController from "../controller/IRouteController";
 
 export const ReservedRoutes = {
@@ -6,7 +7,7 @@ export const ReservedRoutes = {
     GetUpdateDelete: '/ws/route/{id}',
 };
 
-export default function routeApplication(server: any, controller: IRouteController) {
+export default function routeApplication(server: any, configuration: Configuration, controller: IRouteController) {
     server.route({
         method: 'POST',
         path: ReservedRoutes.Create,
@@ -36,4 +37,8 @@ export default function routeApplication(server: any, controller: IRouteControll
         path: ReservedRoutes.GetUpdateDelete,
         handler: (request: any, reply: any) => controller.deleteRoute(request, reply),
     });
+
+    for (const extractor of configuration.extractors) {
+        extractor.routeExtractor(server, configuration);
+    }
 }

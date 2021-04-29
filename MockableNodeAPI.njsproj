@@ -69,15 +69,25 @@
     <Folder Include="build\repository\" />
     <Folder Include="build\router\" />
     <Folder Include="src\" />
+    <Folder Include="src\adapter\" />
     <Folder Include="src\controller\" />
     <Folder Include="src\model\" />
     <Folder Include="src\factory\" />
     <Folder Include="src\handler\" />
     <Folder Include="src\configurator\" />
+    <Folder Include="src\extractor\" />
+    <Folder Include="src\model\route\" />
+    <Folder Include="src\utils\" />
     <Folder Include="src\repository\" />
     <Folder Include="src\router\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\adapter\IFactoryAdapter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\adapter\SwaggerAdapter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\App.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -85,6 +95,15 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\controller\RouteController.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\extractor\DefaultExtractor.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\extractor\IRouteExtractor.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\extractor\SwaggerExtractor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\factory\IRouteFactory.ts">
@@ -99,10 +118,13 @@
     <TypeScriptCompile Include="src\handler\IRouteHandler.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\model\IRoute.ts">
+    <TypeScriptCompile Include="src\model\ILog.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\model\Route.ts">
+    <TypeScriptCompile Include="src\model\route\IRoute.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\model\route\Route.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\repository\IRouteRepository.ts">
@@ -112,6 +134,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="%40types\index.d.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\utils\RequestUtils.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

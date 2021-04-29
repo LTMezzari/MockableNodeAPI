@@ -1,8 +1,10 @@
-import IRoute from '../model/IRoute';
+import IRoute from '../model/route/IRoute';
 
 export default interface IRouteRepository {
 
     addRoute: (route: IRoute) => boolean;
+
+    addRoutes: (routes: IRoute[]) => boolean;
 
     putRoute: (route: IRoute) => boolean;
 

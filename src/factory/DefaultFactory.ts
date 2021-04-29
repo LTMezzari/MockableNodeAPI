@@ -1,11 +1,25 @@
-import Route from '../model/Route';
+import IFactoryAdapter from '../adapter/IFactoryAdapter';
+import IRoute from '../model/route/IRoute';
+import Route from '../model/route/Route';
 import IRouteFactory from './IRouteFactory';
 
 export default class DefaultFactory implements IRouteFactory {
-    createRoute(request: any): Route {
+    adapters: IFactoryAdapter[];
+
+    constructor(adapters: IFactoryAdapter[] = []) {
+        this.adapters = adapters;
+    }
+
+    createRoute(request: any): IRoute {
+        for (const adapter of this.adapters) {
+            const route = adapter.createRoute(request);
+            if (route) {
+                return route;
+            }
+        }
+
         return new Route(
             this.createIdentifier(request) ?? 0,
-            true,
             request.payload.path,
             request.payload.method,
             request.payload.description,
@@ -14,7 +28,18 @@ export default class DefaultFactory implements IRouteFactory {
         );
     }
 
+    createRoutes(request: any): IRoute[] {
+        for (const adapter of this.adapters) {
+            const routes = adapter.createRoutes(request);
+            if (routes) {
+                return routes;
+            }
+        }
+
+        return request.payload;
+    }
+
     createIdentifier(request: any): number {
-        return request.params.id;
+        return request.params?.id;
     }
 }
