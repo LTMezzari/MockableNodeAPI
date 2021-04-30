@@ -10,7 +10,7 @@ export default class DefaultExtractor implements IRouteExtractor {
                 try {
                     const routes = configuration.factory.createRoutes(request);
                     configuration.repository.addRoutes(routes);
-                    configuration.handler.registerRoutes(routes, configuration.repository, server)
+                    configuration.handler.registerRoutes(server, routes, configuration.repository, configuration.authenticator)
                     return reply.response({
                         code: 201,
                         message: `${routes.length} Routes Created`,

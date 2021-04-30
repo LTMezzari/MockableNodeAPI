@@ -4,7 +4,8 @@ import Configuration, { Builder } from './configurator/Configuration';
 import IRouteController from './controller/IRouteController';
 import RouteController from './controller/RouteController';
 import SwaggerExtractor from './extractor/SwaggerExtractor';
-import routeApplication from './router/ApplicationRouter';
+import ApplicationRouter from './router/ApplicationRouter';
+import IApplicationRouter from './router/IApplicationRouter';
 
 const PORT = 3000;
 
@@ -21,9 +22,10 @@ const configuration: Configuration = new Builder()
     .addExtractor(new SwaggerExtractor())
     .build();
 const controller: IRouteController = new RouteController(configuration);
+const router: IApplicationRouter = new ApplicationRouter(controller);
 
 const init = async () => {
-    routeApplication(server, configuration, controller);
+    router.createRoutes(server, configuration);
     await server.start();
 }
 init();

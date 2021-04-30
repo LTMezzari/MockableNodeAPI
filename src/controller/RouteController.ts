@@ -14,7 +14,7 @@ export default class RouteController implements IRouteController {
             const route = this.configuration.factory.createRoute(request);
             const result = this.configuration.repository.addRoute(route);
             if (result) {
-                this.configuration.handler.registerRoute(route, this.configuration.repository, server);
+                this.configuration.handler.registerRoute(server, route, this.configuration.repository, this.configuration.authenticator);
             }
 
             return reply.response({

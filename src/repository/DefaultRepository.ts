@@ -12,11 +12,18 @@ export default class DefaultRepository implements IRouteRepository {
     }
 
     addRoutes(routes: Route[]) {
-        this.routes = routes.map((route: Route, index: number) => ({
-            ...route,
-            id: index
-        }));
-        this.index = this.routes.length;
+        for (const route of routes) {
+            const old = this.routes.find((r) =>
+                r.path === route.path
+                && r.method === route.method
+                && r.isActive
+            );
+            if (old) {
+                this.updateRoute(old, route);
+                continue;
+            }
+            this.addRoute(route);
+        }
         return true;
     }
 
@@ -27,7 +34,7 @@ export default class DefaultRepository implements IRouteRepository {
         );
 
         if (old && old.isActive) {
-            throw Error('Duplicated Route');
+            throw Error(`Duplicated Route (${old.method} => ${old.path})`);
         }
 
         if (old && !old.isActive) {
@@ -50,14 +57,10 @@ export default class DefaultRepository implements IRouteRepository {
         }
 
         if (old.path !== route.path || old.method !== route.method) {
-            throw Error('Method or Path different');
+            throw Error(`Method or Path different (${old.method} => ${old.path})`);
         }
 
-        const index = this.routes.indexOf(old);
-        this.routes[index] = {
-            ...route,
-            logs: old.logs
-        };
+        this.updateRoute(old, route);
         return true;
     }
 
@@ -83,5 +86,13 @@ export default class DefaultRepository implements IRouteRepository {
 
     getRoutes(): IRoute[] {
         return this.routes.filter((r) => r.isActive) ?? [];
+    }
+
+    updateRoute(old: Route, route: Route) {
+        const index = this.routes.indexOf(old);
+        this.routes[index] = {
+            ...route,
+            logs: old.logs
+        };
     }
 }

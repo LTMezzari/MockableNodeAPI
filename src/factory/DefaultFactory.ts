@@ -23,8 +23,11 @@ export default class DefaultFactory implements IRouteFactory {
             request.payload.path,
             request.payload.method,
             request.payload.description,
+            request.payload.queries,
             request.payload.response,
+            request.payload.body,
             request.payload.status,
+            request.payload.needsAuthentication
         );
     }
 
@@ -40,6 +43,6 @@ export default class DefaultFactory implements IRouteFactory {
     }
 
     createIdentifier(request: any): number {
-        return request.params?.id;
+        return parseInt(request.params?.id ?? '0');
     }
 }

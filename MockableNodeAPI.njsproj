@@ -77,6 +77,7 @@
     <Folder Include="src\configurator\" />
     <Folder Include="src\extractor\" />
     <Folder Include="src\model\route\" />
+    <Folder Include="src\authenticator\" />
     <Folder Include="src\utils\" />
     <Folder Include="src\repository\" />
     <Folder Include="src\router\" />
@@ -85,10 +86,13 @@
     <TypeScriptCompile Include="src\adapter\IFactoryAdapter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\adapter\SwaggerAdapter.ts">
+    <TypeScriptCompile Include="src\App.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\App.ts">
+    <TypeScriptCompile Include="src\authenticator\DefaultAuthenticator.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\authenticator\IRouteAuthenticator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\controller\IRouteController.ts">
@@ -134,6 +138,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="%40types\index.d.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\router\IApplicationRouter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\utils\RequestUtils.ts">
