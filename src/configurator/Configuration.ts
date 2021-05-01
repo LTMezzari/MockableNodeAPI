@@ -3,6 +3,7 @@ import IRouteHandler from '../handler/IRouteHandler';
 import IRouteRepository from '../repository/IRouteRepository';
 import IRouteExtractor from '../extractor/IRouteExtractor';
 import IRouteAuthenticator from '../authenticator/IRouteAuthenticator';
+import IRouteConverter from '../converter/IRouteConverter';
 
 import DefaultHandler from '../handler/DefaultHandler';
 import DefaultRepository from '../repository/DefaultRepository';
@@ -16,6 +17,7 @@ class Configuration {
     repository: IRouteRepository;
     authenticator: IRouteAuthenticator;
     extractors: IRouteExtractor[];
+    converters: IRouteConverter[];
 
     constructor() {}
 }
@@ -30,6 +32,7 @@ export class Builder {
         this.configuration.factory = new DefaultFactory();
         this.configuration.authenticator = new DefaultAuthenticator();
         this.configuration.extractors = [new DefaultExtractor()];
+        this.configuration.converters = [];
     }
 
     setFactory(factory: IRouteFactory): Builder {
@@ -59,6 +62,16 @@ export class Builder {
 
     addExtractor(extractor: IRouteExtractor): Builder {
         this.configuration.extractors.push(extractor);
+        return this;
+    }
+
+    setConverters(converters: IRouteConverter[]): Builder {
+        this.configuration.converters = converters;
+        return this;
+    }
+
+    addConverter(converter: IRouteConverter): Builder {
+        this.configuration.converters.push(converter);
         return this;
     }
 

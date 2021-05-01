@@ -12,9 +12,10 @@ export default class Route extends IRoute {
         response?: any,
         body?: any,
         status: number = 200,
-        needsAuthentication: boolean = false
+        needsAuthentication: boolean = false,
+        timeOut?: number
     ) {
-        super(path, method, description, queries, response, body, status, needsAuthentication);
+        super(path, method, description, queries, response, body, status, needsAuthentication, timeOut);
         this.id = id;
     }
 }

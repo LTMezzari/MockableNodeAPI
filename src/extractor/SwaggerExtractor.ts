@@ -6,6 +6,8 @@ import IRoute from "../model/route/IRoute";
 
 import sendRequest from '../utils/RequestUtils';
 
+export const ExtractorRoute: string = '/ws/extract/swagger';
+
 export class Extractor {
 	extractRoutes(request: any): IRoute[] {
 		const routes = [];
@@ -41,7 +43,7 @@ export class Extractor {
 			}
 
 			queries.push({
-				name: param.name,
+				key: param.name,
 				value: this.createDummy(param, request)
 			});
         }
@@ -113,9 +115,13 @@ export class Extractor {
 export class SwaggerAdapter implements IFactoryAdapter {
 	createRoutes(request: any): IRoute[] {
 		try {
+			if (request.path !== undefined && request.path !== ExtractorRoute) {
+				return;
+			}
 			const extractor = new Extractor();
 			return extractor.extractRoutes(request);
-		} catch (_: any) {
+		} catch (error: any) {
+			console.log(error.message);
 			return;
 		}
 	}
@@ -128,8 +134,8 @@ export class SwaggerAdapter implements IFactoryAdapter {
 export default class SwaggerExtractor implements IRouteExtractor {
     routeExtractor(server: any, configuration: Configuration) {
         configuration.factory.adapters.push(new SwaggerAdapter());
-        server.route({
-            path: '/ws/extract/swagger',
+		server.route({
+			path: ExtractorRoute,
             method: 'POST',
             handler: async (request: any, reply: any) => {
                 try {
@@ -145,8 +151,9 @@ export default class SwaggerExtractor implements IRouteExtractor {
                 } catch (error: any) {
                     console.error(error.message);
                     return reply.response({
-                        code: 400,
-                        error: error.message
+						code: 400,
+						error: 'Bad Request',
+                        message: error.message
                     }).code(400);
                 }
 

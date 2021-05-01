@@ -18,7 +18,7 @@ export default class DefaultHandler implements IRouteHandler {
         server.route({
             method: route.method,
             path: route.path,
-            handler: (request: any, reply: any) => {
+            handler: async (request: any, reply: any) => {
                 try {
                     const current = repository.getRoutes().find((r: IRoute) =>
                         r.path === route.path
@@ -29,20 +29,30 @@ export default class DefaultHandler implements IRouteHandler {
                         return reply.response({
                             statusCode: 404,
                             error: 'Not Found',
-                            message: 'Not Found'
+                            message: 'The requested method was not found'
                         }).code(404);
                     }
 
+                    await this.handleTimeOut(current);
                     return this.handleRequest(request, reply, current, authenticator);
                 } catch (error: any) {
                     console.log(error);
                     return reply.response({
                         statusCode: 400,
-                        error: 'Error',
+                        error: 'Bad Request',
                         message: error.message
                     }).code(400);
                 }
             }
+        })
+    }
+
+    handleTimeOut(route: IRoute): Promise<any> {
+        return new Promise((resolve: any) => {
+            if (!route?.timeOut) {
+                return resolve();
+            }
+            setTimeout(resolve, route.timeOut);
         })
     }
 

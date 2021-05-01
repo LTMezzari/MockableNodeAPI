@@ -78,6 +78,7 @@
     <Folder Include="src\extractor\" />
     <Folder Include="src\model\route\" />
     <Folder Include="src\authenticator\" />
+    <Folder Include="src\converter\" />
     <Folder Include="src\utils\" />
     <Folder Include="src\repository\" />
     <Folder Include="src\router\" />
@@ -101,10 +102,19 @@
     <TypeScriptCompile Include="src\controller\RouteController.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\converter\IRouteConverter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\converter\PostmanConverter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\extractor\DefaultExtractor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\extractor\IRouteExtractor.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\extractor\PostmanExtractor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\extractor\SwaggerExtractor.ts">

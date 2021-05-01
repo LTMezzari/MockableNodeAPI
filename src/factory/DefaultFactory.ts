@@ -27,7 +27,8 @@ export default class DefaultFactory implements IRouteFactory {
             request.payload.response,
             request.payload.body,
             request.payload.status,
-            request.payload.needsAuthentication
+            request.payload.needsAuthentication,
+            request.payload.timeOut,
         );
     }
 

@@ -49,5 +49,9 @@ export default class ApplicationRouter implements IApplicationRouter {
         for (const extractor of configuration.extractors) {
             extractor.routeExtractor(server, configuration);
         }
+
+        for (const converter of configuration.converters) {
+            converter.routeConverter(server, configuration);
+        }
     }
 }

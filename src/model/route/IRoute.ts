@@ -8,6 +8,7 @@ export default abstract class IRoute {
     description?: string;
     queries?: any[];
     body?: any;
+    timeOut?: number;
     needsAuthentication: boolean = false;
     isActive: boolean = true;
     logs: ILog[] = [];
@@ -20,7 +21,8 @@ export default abstract class IRoute {
         response?: any,
         body?: any,
         status: number = 200,
-        needsAuthentication: boolean = true
+        needsAuthentication: boolean = true,
+        timeOut?: number
     ) {
         this.path = path;
         this.method = method;
@@ -30,5 +32,6 @@ export default abstract class IRoute {
         this.body = body;
         this.status = status;
         this.needsAuthentication = needsAuthentication;
+        this.timeOut = timeOut;
     }
 }

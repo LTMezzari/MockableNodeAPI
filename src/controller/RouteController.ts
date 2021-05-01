@@ -47,6 +47,7 @@ export default class RouteController implements IRouteController {
             if (!route) {
                 return reply.response({
                     code: 404,
+                    error: 'Not Found',
                     message: 'The requested route was not found'
                 }).code(404);
             }
@@ -68,6 +69,7 @@ export default class RouteController implements IRouteController {
             if (!result) {
                 return reply.response({
                     code: 404,
+                    error: 'Not Found',
                     message: 'The requested route was not found to edit'
                 }).code(404);
             }
@@ -89,6 +91,7 @@ export default class RouteController implements IRouteController {
             if (!result) {
                 return reply.response({
                     code: 404,
+                    error: 'Not Found',
                     message: 'The requested route was not found to delete'
                 }).code(404);
             }
@@ -106,6 +109,7 @@ export default class RouteController implements IRouteController {
         console.log(error.message);
         return reply.response({
             code: 400,
+            error: 'Bad Request',
             message: error.message
         }).code(400);
     }
