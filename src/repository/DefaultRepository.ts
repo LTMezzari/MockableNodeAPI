@@ -16,7 +16,6 @@ export default class DefaultRepository implements IRouteRepository {
             const old = this.routes.find((r) =>
                 r.path === route.path
                 && r.method === route.method
-                && r.isActive
             );
             if (old) {
                 this.updateRoute(old, route);
@@ -33,15 +32,8 @@ export default class DefaultRepository implements IRouteRepository {
             && r.method === route.method
         );
 
-        if (old && old.isActive) {
+        if (old) {
             throw Error(`Duplicated Route (${old.method} => ${old.path})`);
-        }
-
-        if (old && !old.isActive) {
-            const index = this.routes.indexOf(old);
-            route.id = index;
-            this.routes[index] = route;
-            return false;
         }
 
         route.id = this.index;
@@ -51,7 +43,7 @@ export default class DefaultRepository implements IRouteRepository {
     }
 
     putRoute(route: Route): boolean {
-        const old = this.routes.find((r) => r.id == route.id && r.isActive);
+        const old = this.routes.find((r) => r.id == route.id);
         if (!old) {
             return false;
         }
@@ -65,11 +57,11 @@ export default class DefaultRepository implements IRouteRepository {
     }
 
     deleteRoute(identifier: any): boolean {
-        const route = this.routes.find((r) => r.id == identifier && r.isActive);
+        const route = this.routes.find((r) => r.id == identifier);
 
         if (route) {
             const index = this.routes.indexOf(route);
-            this.routes[index].isActive = false;
+            this.routes.splice(index, 1);
             return true;
         }
         return false;
@@ -77,7 +69,7 @@ export default class DefaultRepository implements IRouteRepository {
 
     getRoute(identifier: any): IRoute | null {
         const route = this.routes.find((r) => r.id === identifier);
-        if (route && route.isActive) {
+        if (route) {
             return route;
         }
 
@@ -85,10 +77,10 @@ export default class DefaultRepository implements IRouteRepository {
     }
 
     getRoutes(): IRoute[] {
-        return this.routes.filter((r) => r.isActive) ?? [];
+        return this.routes ?? [];
     }
 
-    updateRoute(old: Route, route: Route) {
+    private updateRoute(old: Route, route: Route) {
         const index = this.routes.indexOf(old);
         this.routes[index] = {
             ...route,

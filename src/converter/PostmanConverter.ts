@@ -13,7 +13,8 @@ export default class PostmanConverter implements IRouteConverter {
             handler: (request: any, reply: any) => {
                 try {
                     const name: string | undefined = request.query.name;
-                    return reply.response(this.convertRoutes(name, configuration.repository)).code(200);
+                    const shouldAggroupCollection: boolean | undefined = request.query.aggroup ? request.query.aggroup !== "false" : undefined;
+                    return reply.response(this.convertRoutes(name, shouldAggroupCollection, configuration.repository)).code(200);
                 } catch (error: any) {
                     console.log(error.message);
                     return reply.response({
@@ -26,21 +27,25 @@ export default class PostmanConverter implements IRouteConverter {
         })
     }
 
-    convertRoutes(name: string = 'Mocked Collection', repository: IRouteRepository): any {
+    convertRoutes(name: string = 'Mocked Collection', shouldAggroup: boolean = true, repository: IRouteRepository): any {
         return {
             info: {
                 name,
                 schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
             },
-            items: this.extractCollection(repository)
+            items: this.extractCollection(repository, shouldAggroup)
         }
     }
 
-    extractCollection(repository: IRouteRepository): any[] {
+    extractCollection(repository: IRouteRepository, shouldAggroup: boolean): any[] {
         const routes = repository.getRoutes();
         const items = [];
         for (const route of routes) {
             items.push(this.extractItem(route));
+        }
+
+        if (!shouldAggroup) {
+            return items;
         }
         return this.aggroupItems(items);
     }
@@ -128,7 +133,7 @@ export default class PostmanConverter implements IRouteConverter {
             host: [
                 hostname,
             ],
-            path: splittedUrl,
+            path: splittedUrl.map((path: string) => path.replace('{', '{{').replace('}', '}}')),
             query: route.queries
         };
     }
