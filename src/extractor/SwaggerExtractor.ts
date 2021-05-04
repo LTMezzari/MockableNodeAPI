@@ -28,7 +28,7 @@ export class Extractor {
 		for (const param of content[method].parameters ?? []) {
 			if (param.in === 'body') {
 				if (!param.schema || !param.schema['$ref']) {
-					body = this.createDummy(param, request);
+					body = this.createDummy(param.schema, request);
 					continue;
 				}
 
@@ -58,7 +58,6 @@ export class Extractor {
 			description: description,
 			response: responseBody,
 			status: status,
-			isActive: true,
 			logs: [],
 			queries,
 			body,

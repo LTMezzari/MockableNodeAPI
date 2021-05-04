@@ -23,14 +23,13 @@ export class Extractor {
 
     extractRoute(item: any): IRoute {
         return {
-            path: item.request.url.path.length > 0 ? '/' + item.request.url.path.join('/') : '/',
+            path: item.request.url.path.length > 0 ? '/' + item.request.url.path.join('/').replace(/\{{/g, '{').replace(/\}}/g, '}') : '/',
             method: item.request.method,
             description: item.request.description,
             status: item.response.length > 0 ? item.response[0].code : 200,
             response: item.response.length > 0 ? JSON.parse(item.response[0].body) : undefined,
             queries: item.request.url.query?.length > 0 ? item.request.url.query : undefined,
             body: item.request.body?.raw ? JSON.parse(item.request.body?.raw) : undefined,
-            isActive: true,
             needsAuthentication: false,
             logs: []
         }

@@ -10,7 +10,6 @@ export default abstract class IRoute {
     body?: any;
     timeOut?: number;
     needsAuthentication: boolean = false;
-    isActive: boolean = true;
     logs: ILog[] = [];
 
     constructor(

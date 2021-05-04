@@ -25,7 +25,7 @@ export default class DefaultHandler implements IRouteHandler {
                         && r.method === route.method
                     );
 
-                    if (!current?.isActive) {
+                    if (!current) {
                         return reply.response({
                             statusCode: 404,
                             error: 'Not Found',
