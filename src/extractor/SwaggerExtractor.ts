@@ -12,20 +12,22 @@ export class Extractor {
 	extractRoutes(request: any): IRoute[] {
 		const routes = [];
 		for (const [endpoint, content] of Object.entries(request.paths)) {
-			routes.push(this.extractRoute(endpoint, content, request));
+			const path = endpoint.split('?')[0] ?? endpoint;
+			const methods = Object.getOwnPropertyNames(content);
+			for (const [method, data] of Object.entries(content)) {
+				routes.push(this.extractRoute(path, method, data, request));
+            }
 		}
 		return routes;
 	}
 
-	extractRoute(endpoint: string, content: any, request: any) {
-		const path = endpoint.split('?')[0] ?? endpoint;
-		const method = Object.getOwnPropertyNames(content)[0];
-		const description = content[method].summary;
-		const status = parseInt(Object.getOwnPropertyNames(content[method].responses)[0])
+	extractRoute(path: string, method: string, content: any, request: any) {
+		const description = content.summary;
+		const status = parseInt(Object.getOwnPropertyNames(content.responses)[0])
 
 		const queries = [];
 		let body = undefined;
-		for (const param of content[method].parameters ?? []) {
+		for (const param of content.parameters ?? []) {
 			if (param.in === 'body') {
 				if (!param.schema || !param.schema['$ref']) {
 					body = this.createDummy(param.schema, request);
@@ -48,7 +50,7 @@ export class Extractor {
 			});
         }
 
-		const rawResponseLink = content[method].responses[status].schema['$ref'];
+		const rawResponseLink = content.responses[status].schema['$ref'];
 		const responseLink = this.extractLink(rawResponseLink);
 		const responseBody = this.extractBody(responseLink, request);
 

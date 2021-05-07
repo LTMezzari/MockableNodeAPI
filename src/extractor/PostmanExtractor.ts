@@ -12,8 +12,9 @@ export class Extractor {
 
     extractItems(items: any[], routes: IRoute[]): IRoute[] {
         for (const item of items) {
-            if (item.items?.length > 0) {
-                this.extractItems(item.items, routes);
+            const subItems = item.items ?? item.item;
+            if (subItems?.length > 0) {
+                this.extractItems(subItems, routes);
                 continue;
             }
             routes.push(this.extractRoute(item));
@@ -43,7 +44,7 @@ export class PostmanAdapter implements IFactoryAdapter {
                 return;
             }
             const extractor = new Extractor();
-            return extractor.extractRoutes(request.payload.items);
+            return extractor.extractRoutes(request.payload.items ?? request.payload.item);
         } catch (error: any) {
             console.log(error.message);
             return;
