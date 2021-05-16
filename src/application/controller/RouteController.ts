@@ -1,4 +1,4 @@
-import Configuration from '../configurator/Configuration';
+import Configuration from '../../configurator/Configuration';
 import IRouteController from './IRouteController';
 
 export default class RouteController implements IRouteController {
@@ -11,8 +11,9 @@ export default class RouteController implements IRouteController {
 
     postRoute(server: any, request: any, reply: any) {
         try {
+            const options = this.configuration.factory.createOptions(request);
             const route = this.configuration.factory.createRoute(request);
-            const result = this.configuration.repository.addRoute(route);
+            const result = this.configuration.repository.addRoute(route, options);
             if (result) {
                 this.configuration.handler.registerRoute(server, route, this.configuration.repository, this.configuration.authenticator);
             }
@@ -29,10 +30,15 @@ export default class RouteController implements IRouteController {
 
     getRoutes(request: any, reply: any) {
         try {
+            const options = this.configuration.factory.createOptions(request);
+            const routes = this.configuration.repository.getRoutes(options);
             return reply.response({
                 code: 200,
                 success: true,
-                data: this.configuration.repository.getRoutes()
+                data: routes.map((route: any) => ({
+                    ...route,
+                    logs: undefined,
+                }))
             }).code(200);
         } catch (error: any) {
             return this.dispatchError(error, reply);
@@ -42,8 +48,9 @@ export default class RouteController implements IRouteController {
 
     getRoute(request: any, reply: any) {
         try {
+            const options = this.configuration.factory.createOptions(request);
             const identifier = this.configuration.factory.createIdentifier(request);
-            const route = this.configuration.repository.getRoute(identifier);
+            const route = this.configuration.repository.getRoute(identifier, options);
             if (!route) {
                 return reply.response({
                     code: 404,
@@ -64,8 +71,9 @@ export default class RouteController implements IRouteController {
 
     putRoute(request: any, reply: any) {
         try {
+            const options = this.configuration.factory.createOptions(request);
             const route = this.configuration.factory.createRoute(request);
-            const result = this.configuration.repository.putRoute(route);
+            const result = this.configuration.repository.putRoute(route, options);
             if (!result) {
                 return reply.response({
                     code: 404,
@@ -86,8 +94,9 @@ export default class RouteController implements IRouteController {
 
     deleteRoute(request: any, reply: any) {
         try {
+            const options = this.configuration.factory.createOptions(request);
             const identifier = this.configuration.factory.createIdentifier(request);
-            const result = this.configuration.repository.deleteRoute(identifier);
+            const result = this.configuration.repository.deleteRoute(identifier, options);
             if (!result) {
                 return reply.response({
                     code: 404,
@@ -99,6 +108,24 @@ export default class RouteController implements IRouteController {
             return reply.response({
                 code: 200,
                 success: result
+            }).code(200);
+        } catch (error: any) {
+            return this.dispatchError(error, reply);
+        }
+    }
+
+    getServerLogs(request: any, reply: any) {
+        try {
+            const options = this.configuration.factory.createOptions(request);
+            const routes = this.configuration.repository.getRoutes(options);
+            const logs = [];
+            routes.forEach((route: any) => {
+                logs.push(...route.logs);
+            });
+            logs.sort((log1: any, log2: any) => log2.time - log1.time);
+            return reply.response({
+                code: 200,
+                success: logs,
             }).code(200);
         } catch (error: any) {
             return this.dispatchError(error, reply);

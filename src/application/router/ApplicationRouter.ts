@@ -1,10 +1,11 @@
-import Configuration from "../configurator/Configuration";
+import Configuration from "../../configurator/Configuration";
 import IRouteController from "../controller/IRouteController";
 import IApplicationRouter from "./IApplicationRouter";
 
 export const ReservedRoutes = {
     Create: '/ws/route',
     List: '/ws/routes',
+    Logs: '/ws/routes/logs',
     GetUpdateDelete: '/ws/route/{id}',
 };
 
@@ -44,6 +45,12 @@ export default class ApplicationRouter implements IApplicationRouter {
             method: 'DELETE',
             path: ReservedRoutes.GetUpdateDelete,
             handler: (request: any, reply: any) => this.controller.deleteRoute(request, reply),
+        });
+
+        server.route({
+            method: 'GET',
+            path: ReservedRoutes.Logs,
+            handler: (request: any, reply: any) => this.controller.getServerLogs(request, reply),
         });
 
         for (const extractor of configuration.extractors) {

@@ -1,10 +1,9 @@
-import Configuration from "../configurator/Configuration";
+import Configuration from "../../configurator/Configuration";
 
 import IRouteExtractor from "./IRouteExtractor";
-import IFactoryAdapter from "../adapter/IFactoryAdapter";
-import IRoute from "../model/route/IRoute";
+import IRoute from "../../domain/model/route/IRoute";
 
-import sendRequest from '../utils/RequestUtils';
+import sendRequest from '../../utils/RequestUtils';
 
 export const ExtractorRoute: string = '/ws/extract/swagger';
 
@@ -13,7 +12,6 @@ export class Extractor {
 		const routes = [];
 		for (const [endpoint, content] of Object.entries(request.paths)) {
 			const path = endpoint.split('?')[0] ?? endpoint;
-			const methods = Object.getOwnPropertyNames(content);
 			for (const [method, data] of Object.entries(content)) {
 				routes.push(this.extractRoute(path, method, data, request));
             }
@@ -113,35 +111,16 @@ export class Extractor {
 	}
 }
 
-export class SwaggerAdapter implements IFactoryAdapter {
-	createRoutes(request: any): IRoute[] {
-		try {
-			if (request.path !== undefined && request.path !== ExtractorRoute) {
-				return;
-			}
-			const extractor = new Extractor();
-			return extractor.extractRoutes(request);
-		} catch (error: any) {
-			console.log(error.message);
-			return;
-		}
-	}
-
-	createRoute(_: any): IRoute {
-		return;
-	}
-}
-
 export default class SwaggerExtractor implements IRouteExtractor {
     routeExtractor(server: any, configuration: Configuration) {
-        configuration.factory.adapters.push(new SwaggerAdapter());
 		server.route({
 			path: ExtractorRoute,
             method: 'POST',
             handler: async (request: any, reply: any) => {
                 try {
-                    const response = await this.getSwaggerData(request);
-                    const routes = configuration.factory.createRoutes(response);
+					const response = await this.getSwaggerData(request);
+					const extractor = new Extractor();
+					const routes = extractor.extractRoutes(response);
                     configuration.repository.addRoutes(routes);
                     configuration.handler.registerRoutes(server, routes, configuration.repository, configuration.authenticator)
                     return reply.response({

@@ -1,6 +1,6 @@
 import IRouteAuthenticator from '../authenticator/IRouteAuthenticator';
-import IRoute from '../model/route/IRoute';
-import IRouteRepository from '../repository/IRouteRepository';
+import IRoute from '../../domain/model/route/IRoute';
+import IRouteRepository from '../../domain/repository/IRouteRepository';
 import IRouteHandler from './IRouteHandler';
 
 export default class DefaultHandler implements IRouteHandler {
@@ -84,6 +84,7 @@ export default class DefaultHandler implements IRouteHandler {
 
     addLog(route: IRoute, message: string, data: any) {
         route.logs.push({
+            time: new Date(),
             message,
             data,
         })

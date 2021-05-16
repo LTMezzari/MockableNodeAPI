@@ -82,6 +82,10 @@ export default class DefaultRepository implements IRouteRepository {
 
     private updateRoute(old: Route, route: Route) {
         const index = this.routes.indexOf(old);
+        if (index === -1) {
+            throw Error(`Route not found (${route.method} => ${route.path})`);
+        }
+        route.id = old.id;
         this.routes[index] = {
             ...route,
             logs: old.logs

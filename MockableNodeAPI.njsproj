@@ -51,7 +51,7 @@
     <Content Include="src\configurator\Configuration.ts">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\repository\DefaultRepository.ts">
+    <Content Include="src\domain\repository\DefaultRepository.ts">
       <SubType>Code</SubType>
     </Content>
     <Content Include="tsconfig.json">
@@ -69,88 +69,90 @@
     <Folder Include="build\repository\" />
     <Folder Include="build\router\" />
     <Folder Include="src\" />
-    <Folder Include="src\adapter\" />
-    <Folder Include="src\controller\" />
-    <Folder Include="src\model\" />
-    <Folder Include="src\factory\" />
-    <Folder Include="src\handler\" />
+    <Folder Include="src\domain\adapter\" />
+    <Folder Include="src\application\controller\" />
+    <Folder Include="src\domain\model\" />
+    <Folder Include="src\domain\factory\" />
+    <Folder Include="src\application\handler\" />
     <Folder Include="src\configurator\" />
-    <Folder Include="src\extractor\" />
-    <Folder Include="src\model\route\" />
-    <Folder Include="src\authenticator\" />
-    <Folder Include="src\converter\" />
+    <Folder Include="src\application\extractor\" />
+    <Folder Include="src\domain\model\route\" />
+    <Folder Include="src\application\authenticator\" />
+    <Folder Include="src\application\converter\" />
+    <Folder Include="src\domain\" />
+    <Folder Include="src\application\" />
     <Folder Include="src\utils\" />
-    <Folder Include="src\repository\" />
-    <Folder Include="src\router\" />
+    <Folder Include="src\domain\repository\" />
+    <Folder Include="src\application\router\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\adapter\IFactoryAdapter.ts">
+    <TypeScriptCompile Include="src\domain\adapter\IFactoryAdapter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\App.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\authenticator\DefaultAuthenticator.ts">
+    <TypeScriptCompile Include="src\application\authenticator\DefaultAuthenticator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\authenticator\IRouteAuthenticator.ts">
+    <TypeScriptCompile Include="src\application\authenticator\IRouteAuthenticator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\controller\IRouteController.ts">
+    <TypeScriptCompile Include="src\application\controller\IRouteController.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\controller\RouteController.ts">
+    <TypeScriptCompile Include="src\application\controller\RouteController.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\converter\IRouteConverter.ts">
+    <TypeScriptCompile Include="src\application\converter\IRouteConverter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\converter\PostmanConverter.ts">
+    <TypeScriptCompile Include="src\application\converter\PostmanConverter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\extractor\DefaultExtractor.ts">
+    <TypeScriptCompile Include="src\application\extractor\DefaultExtractor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\extractor\IRouteExtractor.ts">
+    <TypeScriptCompile Include="src\application\extractor\IRouteExtractor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\extractor\PostmanExtractor.ts">
+    <TypeScriptCompile Include="src\application\extractor\PostmanExtractor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\extractor\SwaggerExtractor.ts">
+    <TypeScriptCompile Include="src\application\extractor\SwaggerExtractor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\factory\IRouteFactory.ts">
+    <TypeScriptCompile Include="src\domain\factory\IRouteFactory.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\factory\DefaultFactory.ts">
+    <TypeScriptCompile Include="src\domain\factory\DefaultFactory.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\handler\DefaultHandler.ts">
+    <TypeScriptCompile Include="src\application\handler\DefaultHandler.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\handler\IRouteHandler.ts">
+    <TypeScriptCompile Include="src\application\handler\IRouteHandler.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\model\ILog.ts">
+    <TypeScriptCompile Include="src\domain\model\ILog.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\model\route\IRoute.ts">
+    <TypeScriptCompile Include="src\domain\model\route\IRoute.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\model\route\Route.ts">
+    <TypeScriptCompile Include="src\domain\model\route\Route.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\repository\IRouteRepository.ts">
+    <TypeScriptCompile Include="src\domain\repository\IRouteRepository.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\router\ApplicationRouter.ts">
+    <TypeScriptCompile Include="src\application\router\ApplicationRouter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="%40types\index.d.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\router\IApplicationRouter.ts">
+    <TypeScriptCompile Include="src\application\router\IApplicationRouter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\utils\RequestUtils.ts">

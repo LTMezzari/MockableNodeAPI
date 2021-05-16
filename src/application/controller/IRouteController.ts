@@ -8,4 +8,6 @@ export default interface IRouteController {
     putRoute: (request: any, reply: any) => void;
 
     deleteRoute: (request: any, reply: any) => void;
+
+    getServerLogs: (request: any, reply: any) => void;
 }

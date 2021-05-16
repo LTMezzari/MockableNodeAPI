@@ -1,4 +1,4 @@
-import Configuration from "../configurator/Configuration";
+import Configuration from "../../configurator/Configuration";
 import IRouteExtractor from "./IRouteExtractor";
 
 export default class DefaultExtractor implements IRouteExtractor {

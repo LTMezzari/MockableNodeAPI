@@ -1,15 +1,15 @@
-import IRouteFactory from '../factory/IRouteFactory';
-import IRouteHandler from '../handler/IRouteHandler';
-import IRouteRepository from '../repository/IRouteRepository';
-import IRouteExtractor from '../extractor/IRouteExtractor';
-import IRouteAuthenticator from '../authenticator/IRouteAuthenticator';
-import IRouteConverter from '../converter/IRouteConverter';
+import IRouteFactory from '../domain/factory/IRouteFactory';
+import IRouteHandler from '../application/handler/IRouteHandler';
+import IRouteRepository from '../domain/repository/IRouteRepository';
+import IRouteExtractor from '../application/extractor/IRouteExtractor';
+import IRouteAuthenticator from '../application/authenticator/IRouteAuthenticator';
+import IRouteConverter from '../application/converter/IRouteConverter';
 
-import DefaultHandler from '../handler/DefaultHandler';
-import DefaultRepository from '../repository/DefaultRepository';
-import DefaultFactory from '../factory/DefaultFactory';
-import DefaultExtractor from '../extractor/DefaultExtractor';
-import DefaultAuthenticator from '../authenticator/DefaultAuthenticator';
+import DefaultHandler from '../application/handler/DefaultHandler';
+import DefaultRepository from '../domain/repository/DefaultRepository';
+import DefaultFactory from '../domain/factory/DefaultFactory';
+import DefaultExtractor from '../application/extractor/DefaultExtractor';
+import DefaultAuthenticator from '../application/authenticator/DefaultAuthenticator';
 
 class Configuration {
     factory: IRouteFactory;

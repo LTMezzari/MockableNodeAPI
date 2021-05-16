@@ -1,4 +1,4 @@
-import IRoute from "../model/route/IRoute";
+import IRoute from "../../domain/model/route/IRoute";
 import IRouteAuthenticator from "./IRouteAuthenticator";
 
 export default class DefaultAuthenticator implements IRouteAuthenticator {

@@ -1,6 +1,5 @@
-import IFactoryAdapter from "../adapter/IFactoryAdapter";
-import Configuration from "../configurator/Configuration";
-import IRoute from "../model/route/IRoute";
+import Configuration from "../../configurator/Configuration";
+import IRoute from "../../domain/model/route/IRoute";
 import IRouteExtractor from "./IRouteExtractor";
 
 export const ExtractorRoute: string = '/ws/extract/postman';
@@ -37,35 +36,15 @@ export class Extractor {
     }
 }
 
-export class PostmanAdapter implements IFactoryAdapter {
-    createRoutes(request: any): IRoute[] {
-        try {
-            if (request.path !== undefined && request.path !== ExtractorRoute) {
-                return;
-            }
-            const extractor = new Extractor();
-            return extractor.extractRoutes(request.payload.items ?? request.payload.item);
-        } catch (error: any) {
-            console.log(error.message);
-            return;
-        }
-    }
-
-    createRoute(_: any): IRoute {
-        return;
-    }
-
-}
-
 export default class PostmanExtractor implements IRouteExtractor {
     routeExtractor(server: any, configuration: Configuration) {
-        configuration.factory.adapters.push(new PostmanAdapter());
         server.route({
             method: 'POST',
             path: ExtractorRoute,
             handler: (request: any, reply: any) => {
                 try {
-                    const routes = configuration.factory.createRoutes(request);
+                    const extractor = new Extractor();
+                    const routes = extractor.extractRoutes(request.payload.items ?? request.payload.item);
                     configuration.repository.addRoutes(routes);
                     configuration.handler.registerRoutes(server, routes, configuration.repository, configuration.authenticator)
                     return reply.response({

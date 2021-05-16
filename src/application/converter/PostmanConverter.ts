@@ -1,6 +1,6 @@
-import Configuration from "../configurator/Configuration";
-import IRoute from "../model/route/IRoute";
-import IRouteRepository from "../repository/IRouteRepository";
+import Configuration from "../../configurator/Configuration";
+import IRoute from "../../domain/model/route/IRoute";
+import IRouteRepository from "../../domain/repository/IRouteRepository";
 import IRouteConverter from "./IRouteConverter";
 
 export const ConverterRoute: string = '/ws/converter/postman';
