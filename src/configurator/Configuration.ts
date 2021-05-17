@@ -4,6 +4,7 @@ import IRouteRepository from '../domain/repository/IRouteRepository';
 import IRouteExtractor from '../application/extractor/IRouteExtractor';
 import IRouteAuthenticator from '../application/authenticator/IRouteAuthenticator';
 import IRouteConverter from '../application/converter/IRouteConverter';
+import IRouteValidator from '../application/validator/IRouteValidator';
 
 import DefaultHandler from '../application/handler/DefaultHandler';
 import DefaultRepository from '../domain/repository/DefaultRepository';
@@ -16,6 +17,7 @@ class Configuration {
     handler: IRouteHandler;
     repository: IRouteRepository;
     authenticator: IRouteAuthenticator;
+    validator: IRouteValidator;
     extractors: IRouteExtractor[];
     converters: IRouteConverter[];
 
@@ -52,6 +54,11 @@ export class Builder {
 
     setAuthenticator(authenticator: IRouteAuthenticator): Builder {
         this.configuration.authenticator = authenticator;
+        return this;
+    }
+
+    setValidator(validator: IRouteValidator): Builder {
+        this.configuration.validator = validator;
         return this;
     }
 

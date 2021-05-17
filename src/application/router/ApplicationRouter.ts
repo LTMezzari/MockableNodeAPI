@@ -1,3 +1,5 @@
+import * as Joi from 'joi';
+
 import Configuration from "../../configurator/Configuration";
 import IRouteController from "../controller/IRouteController";
 import IApplicationRouter from "./IApplicationRouter";
@@ -21,6 +23,23 @@ export default class ApplicationRouter implements IApplicationRouter {
             method: 'POST',
             path: ReservedRoutes.Create,
             handler: (request: any, reply: any) => this.controller.postRoute(server, request, reply),
+            options: {
+                validate: {
+                    payload: Joi.object({
+                        path: Joi.string().required().pattern(/(^[/].*)/),
+                        method: Joi.string().required(),
+                        description: Joi.string().optional(),
+                        status: Joi.number().optional(),
+                        response: Joi.any().optional(),
+                        body: Joi.any().optional(),
+                        timeOut: Joi.number().optional(),
+                        needsAuthentication: Joi.boolean().optional(),
+                    }),
+                    options: {
+                        allowUnknown: true
+                    }
+                }
+            }
         });
 
         server.route({
@@ -33,18 +52,59 @@ export default class ApplicationRouter implements IApplicationRouter {
             method: 'GET',
             path: ReservedRoutes.GetUpdateDelete,
             handler: (request: any, reply: any) => this.controller.getRoute(request, reply),
+            options: {
+                validate: {
+                    params: Joi.object({
+                        id: Joi.any().required()
+                    }),
+                    options: {
+                        allowUnknown: true
+                    }
+                }
+            }
         });
 
         server.route({
             method: 'PUT',
             path: ReservedRoutes.GetUpdateDelete,
             handler: (request: any, reply: any) => this.controller.putRoute(request, reply),
+            options: {
+                validate: {
+                    params: Joi.object({
+                        id: Joi.any().required()
+                    }),
+                    payload: Joi.object({
+                        path: Joi.string().required().pattern(/(^[/].*)/),
+                        method: Joi.string().required(),
+                        description: Joi.string().optional(),
+                        status: Joi.number().optional(),
+                        response: Joi.any().optional(),
+                        body: Joi.any().optional(),
+                        timeOut: Joi.number().optional(),
+                        authentication: Joi.any().optional(),
+                        validation: Joi.any().optional(),
+                    }),
+                    options: {
+                        allowUnknown: true
+                    }
+                }
+            }
         });
 
         server.route({
             method: 'DELETE',
             path: ReservedRoutes.GetUpdateDelete,
             handler: (request: any, reply: any) => this.controller.deleteRoute(request, reply),
+            options: {
+                validate: {
+                    params: Joi.object({
+                        id: Joi.any().required()
+                    }),
+                    options: {
+                        allowUnknown: true
+                    }
+                }
+            }
         });
 
         server.route({

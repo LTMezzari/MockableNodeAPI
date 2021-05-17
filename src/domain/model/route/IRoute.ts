@@ -1,4 +1,5 @@
 import ILog from "../ILog";
+import IValidation from "../IValidation";
 
 export default abstract class IRoute {
     path: string;
@@ -9,8 +10,9 @@ export default abstract class IRoute {
     queries?: any[];
     body?: any;
     timeOut?: number;
-    needsAuthentication: boolean = false;
+    authentication?: any = false;
     logs: ILog[] = [];
+    validation?: IValidation;
 
     constructor(
         path: string,
@@ -20,8 +22,9 @@ export default abstract class IRoute {
         response?: any,
         body?: any,
         status: number = 200,
-        needsAuthentication: boolean = true,
-        timeOut?: number
+        authentication: boolean = true,
+        timeOut?: number,
+        validation?: any
     ) {
         this.path = path;
         this.method = method;
@@ -30,7 +33,8 @@ export default abstract class IRoute {
         this.response = response;
         this.body = body;
         this.status = status;
-        this.needsAuthentication = needsAuthentication;
+        this.authentication = authentication;
         this.timeOut = timeOut;
+        this.validation = validation;
     }
 }

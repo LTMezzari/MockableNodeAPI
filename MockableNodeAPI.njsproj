@@ -69,6 +69,7 @@
     <Folder Include="build\repository\" />
     <Folder Include="build\router\" />
     <Folder Include="src\" />
+    <Folder Include="src\application\validator\" />
     <Folder Include="src\domain\adapter\" />
     <Folder Include="src\application\controller\" />
     <Folder Include="src\domain\model\" />
@@ -86,6 +87,12 @@
     <Folder Include="src\application\router\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\application\validator\IRouteValidator.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\application\validator\JoiRouteValidator.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\domain\adapter\IFactoryAdapter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -135,6 +142,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\domain\model\ILog.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\domain\model\IValidation.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\domain\model\route\IRoute.ts">

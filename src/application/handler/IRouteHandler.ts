@@ -1,9 +1,8 @@
-import IRouteAuthenticator from '../authenticator/IRouteAuthenticator';
 import IRoute from '../../domain/model/route/IRoute';
-import IRouteRepository from '../../domain/repository/IRouteRepository';
+import Configuration from '../../configurator/Configuration';
 
 export default interface IRouteHandler {
-    registerRoute: (server: any, route: IRoute, repository: IRouteRepository, authenticator?: IRouteAuthenticator) => void;
+    registerRoute: (server: any, route: IRoute, configuration: Configuration) => void;
 
-    registerRoutes: (server: any, routes: IRoute[], repository: IRouteRepository, authenticator?: IRouteAuthenticator) => void;
+    registerRoutes: (server: any, routes: IRoute[], configuration: Configuration) => void;
 }

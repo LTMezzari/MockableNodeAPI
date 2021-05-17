@@ -2,18 +2,24 @@ import IRouteAuthenticator from '../authenticator/IRouteAuthenticator';
 import IRoute from '../../domain/model/route/IRoute';
 import IRouteRepository from '../../domain/repository/IRouteRepository';
 import IRouteHandler from './IRouteHandler';
+import Configuration from '../../configurator/Configuration';
+import IRouteValidator from '../validator/IRouteValidator';
 
 export default class DefaultHandler implements IRouteHandler {
-    registerRoutes(server: any, routes: IRoute[], repository: IRouteRepository, authenticator?: IRouteAuthenticator) {
+    registerRoutes(server: any, routes: IRoute[], configuration: Configuration) {
         for (const route of routes) {
-            this.registerRoute(server, route, repository, authenticator);
+            this.registerRoute(server, route, configuration);
         }
     }
 
-    registerRoute(server: any, route: IRoute, repository: IRouteRepository, authenticator?: IRouteAuthenticator) {
+    registerRoute(server: any, route: IRoute, configuration: Configuration) {
         if (server.match(route.method, route.path)) {
             return;
         }
+
+        const repository = configuration.repository;
+        const authenticator = configuration.authenticator;
+        const validator = configuration.validator;
 
         server.route({
             method: route.method,
@@ -34,7 +40,7 @@ export default class DefaultHandler implements IRouteHandler {
                     }
 
                     await this.handleTimeOut(current);
-                    return this.handleRequest(request, reply, current, authenticator);
+                    return this.handleRequest(request, reply, current, authenticator, validator);
                 } catch (error: any) {
                     console.log(error);
                     return reply.response({
@@ -56,9 +62,9 @@ export default class DefaultHandler implements IRouteHandler {
         })
     }
 
-    handleRequest(request: any, reply: any, route: IRoute, authenticator: IRouteAuthenticator) {
+    handleRequest(request: any, reply: any, route: IRoute, authenticator?: IRouteAuthenticator, validator?: IRouteValidator) {
         try {
-            if (!authenticator?.isRouteAuthenticated(request, route) ?? false) {
+            if (!(authenticator?.isRouteAuthenticated(request, route) ?? true)) {
                 const response = {
                     statusCode: 401,
                     error: 'Unathorized',
@@ -66,6 +72,10 @@ export default class DefaultHandler implements IRouteHandler {
                 };
                 this.addLog(route, 'REQUEST RECEIVED', this.createLog(request, route.response, 401));
                 return reply.response(response).code(401);
+            }
+
+            if (!(validator?.isRouteValid(request, route) ?? true)) {
+                throw Error('The request did not pass the validations');
             }
 
             this.addLog(route, 'REQUEST RECEIVED', this.createLog(request, route.response, route.status));

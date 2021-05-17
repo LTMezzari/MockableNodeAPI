@@ -9,6 +9,7 @@ import PostmanConverter from './application/converter/PostmanConverter';
 import SwaggerExtractor from './application/extractor/SwaggerExtractor';
 import ApplicationRouter from './application/router/ApplicationRouter';
 import PostmanExtractor from './application/extractor/PostmanExtractor';
+import JoyRouteValidator from './application/validator/JoiRouteValidator';
 
 const PORT = 3000;
 
@@ -25,6 +26,7 @@ const configuration: Configuration = new Builder()
     .addExtractor(new SwaggerExtractor())
     .addExtractor(new PostmanExtractor())
     .addConverter(new PostmanConverter())
+    .setValidator(new JoyRouteValidator())
     .build();
 
 const controller: IRouteController = new RouteController(configuration);

@@ -30,7 +30,6 @@ export class Extractor {
             response: item.response.length > 0 ? JSON.parse(item.response[0].body) : undefined,
             queries: item.request.url.query?.length > 0 ? item.request.url.query : undefined,
             body: item.request.body?.raw ? JSON.parse(item.request.body?.raw) : undefined,
-            needsAuthentication: false,
             logs: []
         }
     }
@@ -46,7 +45,7 @@ export default class PostmanExtractor implements IRouteExtractor {
                     const extractor = new Extractor();
                     const routes = extractor.extractRoutes(request.payload.items ?? request.payload.item);
                     configuration.repository.addRoutes(routes);
-                    configuration.handler.registerRoutes(server, routes, configuration.repository, configuration.authenticator)
+                    configuration.handler.registerRoutes(server, routes, configuration)
                     return reply.response({
                         code: 201,
                         message: `${routes.length} Routes Created`,
