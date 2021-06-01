@@ -15,6 +15,7 @@ export default class DefaultFactory implements IRouteFactory {
             this.createIdentifier(request) ?? 0,
             request.payload.path,
             request.payload.method,
+            request.payload.name,
             request.payload.description,
             request.payload.queries,
             request.payload.response,

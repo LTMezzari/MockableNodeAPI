@@ -22,9 +22,11 @@ export class Extractor {
     }
 
     extractRoute(item: any): IRoute {
+        const path = item.request.url.path.length > 0 ? '/' + item.request.url.path.join('/').replace(/\{{/g, '{').replace(/\}}/g, '}') : '/';
         return {
-            path: item.request.url.path.length > 0 ? '/' + item.request.url.path.join('/').replace(/\{{/g, '{').replace(/\}}/g, '}') : '/',
+            path: path,
             method: item.request.method,
+            name: item.name,
             description: item.request.description,
             status: item.response.length > 0 ? item.response[0].code : 200,
             response: item.response.length > 0 ? JSON.parse(item.response[0].body) : undefined,

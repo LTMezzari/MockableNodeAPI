@@ -7,6 +7,7 @@ export default class Route extends IRoute {
         id: number,
         path: string,
         method: string,
+        name?: string,
         description?: string,
         queries?: any[],
         response?: any,
@@ -16,7 +17,7 @@ export default class Route extends IRoute {
         timeOut?: number,
         validation?: any
     ) {
-        super(path, method, description, queries, response, body, status, authentication, timeOut, validation);
+        super(path, method, name, description, queries, response, body, status, authentication, timeOut, validation);
         this.id = id;
     }
 }

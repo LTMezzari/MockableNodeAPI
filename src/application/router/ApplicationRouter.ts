@@ -28,6 +28,7 @@ export default class ApplicationRouter implements IApplicationRouter {
                     payload: Joi.object({
                         path: Joi.string().required().pattern(/(^[/].*)/),
                         method: Joi.string().required(),
+                        name: Joi.string().optional(),
                         description: Joi.string().optional(),
                         status: Joi.number().optional(),
                         response: Joi.any().optional(),

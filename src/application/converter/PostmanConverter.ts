@@ -60,6 +60,12 @@ export default class PostmanConverter implements IRouteConverter {
     }
 
     getFolder(name: string, list: any[]): any {
+        if (!name.includes('/')) {
+            const folder = { name, items: [] };
+            list.push(folder);
+            return folder;
+        }
+
         const nextSlash = name.substring(1).indexOf('/');
         const hasSubfolder = nextSlash !== -1;
         const folderName = name.substring(1, !hasSubfolder ? undefined : nextSlash + 1);
@@ -75,7 +81,7 @@ export default class PostmanConverter implements IRouteConverter {
     }
 
     extractItem(route: IRoute): any {
-        const name = route.path;
+        const name = route.name ?? route.path;
         const request = this.extractRequest(route);
         return {
             name,
