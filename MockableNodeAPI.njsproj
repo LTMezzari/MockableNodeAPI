@@ -51,6 +51,9 @@
     <Content Include="src\configurator\Configuration.ts">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\domain\model\route\ReservedRoute.ts">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\domain\repository\DefaultRepository.ts">
       <SubType>Code</SubType>
     </Content>
@@ -129,6 +132,9 @@
     <TypeScriptCompile Include="src\application\extractor\SwaggerExtractor.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\domain\adapter\ReservedRouteAdapter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\domain\factory\IRouteFactory.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -163,6 +169,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\application\router\IApplicationRouter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\domain\repository\ReservedRouteRepository.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\utils\RequestUtils.ts">

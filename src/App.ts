@@ -10,6 +10,9 @@ import SwaggerExtractor from './application/extractor/SwaggerExtractor';
 import ApplicationRouter from './application/router/ApplicationRouter';
 import PostmanExtractor from './application/extractor/PostmanExtractor';
 import JoyRouteValidator from './application/validator/JoiRouteValidator';
+import ReservedRouteRepository from './domain/repository/ReservedRouteRepository';
+import DefaultFactory from './domain/factory/DefaultFactory';
+import ReservedRouteAdapter from './domain/adapter/ReservedRouteAdapter';
 
 const PORT = 3000;
 
@@ -22,11 +25,21 @@ const server = Hapi.server({
     }
 });
 
+const adapter = new ReservedRouteAdapter();
+const swagger = new SwaggerExtractor();
+const postman = new PostmanExtractor();
+const factory = new DefaultFactory();
+factory.adapter = adapter;
+swagger.adapter = adapter;
+postman.adapter = adapter;
+
 const configuration: Configuration = new Builder()
     .addExtractor(new SwaggerExtractor())
     .addExtractor(new PostmanExtractor())
     .addConverter(new PostmanConverter())
     .setValidator(new JoyRouteValidator())
+    .setRepository(new ReservedRouteRepository())
+    .setFactory(factory)
     .build();
 
 const controller: IRouteController = new RouteController(configuration);
