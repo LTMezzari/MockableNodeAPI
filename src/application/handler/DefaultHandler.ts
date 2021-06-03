@@ -26,7 +26,8 @@ export default class DefaultHandler implements IRouteHandler {
             path: route.path,
             handler: async (request: any, reply: any) => {
                 try {
-                    const current = repository.getRoutes().find((r: IRoute) =>
+                    const options = configuration.factory.createOptions(request);
+                    const current = repository.getRoutes(options).find((r: IRoute) =>
                         r.path === route.path
                         && r.method === route.method
                     );
