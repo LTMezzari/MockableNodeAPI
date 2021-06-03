@@ -14,7 +14,7 @@ export default class DefaultExtractor implements IRouteExtractor {
                     if (this.adapter) {
                         routes = this.adapter.bindRoutes(request, routes);
                     }
-                    configuration.repository.addRoutes(routes);
+                    configuration.repository.addRoutes(routes, configuration.factory.createOptions(request));
                     configuration.handler.registerRoutes(server, routes, configuration);
                     return reply.response({
                         code: 201,
