@@ -122,9 +122,9 @@ export default class SwaggerExtractor implements IRouteExtractor {
                 try {
 					const response = await this.getSwaggerData(request);
 					const extractor = new Extractor();
-					const routes = extractor.extractRoutes(response);
+					let routes = extractor.extractRoutes(response);
 					if (this.adapter) {
-						this.adapter.bindRoutes(request, routes);
+						routes = this.adapter.bindRoutes(request, routes);
 					}
                     configuration.repository.addRoutes(routes);
                     configuration.handler.registerRoutes(server, routes, configuration)

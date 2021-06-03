@@ -47,9 +47,9 @@ export default class PostmanExtractor implements IRouteExtractor {
             handler: (request: any, reply: any) => {
                 try {
                     const extractor = new Extractor();
-                    const routes = extractor.extractRoutes(request.payload.items ?? request.payload.item);
+                    let routes = extractor.extractRoutes(request.payload.items ?? request.payload.item);
                     if (this.adapter) {
-                        this.adapter.bindRoutes(request, routes);
+                        routes = this.adapter.bindRoutes(request, routes);
                     }
                     configuration.repository.addRoutes(routes);
                     configuration.handler.registerRoutes(server, routes, configuration)
