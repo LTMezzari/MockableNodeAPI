@@ -1,7 +1,9 @@
 import Configuration from "../../configurator/Configuration";
+import IFactoryAdapter from "../../domain/adapter/IFactoryAdapter";
 import IRouteExtractor from "./IRouteExtractor";
 
 export default class DefaultExtractor implements IRouteExtractor {
+    adapter: IFactoryAdapter;
     routeExtractor(server: any, configuration: Configuration) {
         server.route({
             path: '/ws/extract/routes',
@@ -9,8 +11,11 @@ export default class DefaultExtractor implements IRouteExtractor {
             handler: async (request: any, reply: any) => {
                 try {
                     const routes = configuration.factory.createRoutes(request);
+                    if (this.adapter) {
+                        this.adapter.bindRoutes(request, routes);
+                    }
                     configuration.repository.addRoutes(routes);
-                    configuration.handler.registerRoutes(server, routes, configuration)
+                    configuration.handler.registerRoutes(server, routes, configuration);
                     return reply.response({
                         code: 201,
                         message: `${routes.length} Routes Created`,

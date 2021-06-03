@@ -4,6 +4,7 @@ import IRouteExtractor from "./IRouteExtractor";
 import IRoute from "../../domain/model/route/IRoute";
 
 import sendRequest from '../../utils/RequestUtils';
+import IFactoryAdapter from "../../domain/adapter/IFactoryAdapter";
 
 export const ExtractorRoute: string = '/ws/extract/swagger';
 
@@ -112,6 +113,7 @@ export class Extractor {
 }
 
 export default class SwaggerExtractor implements IRouteExtractor {
+    adapter: IFactoryAdapter;
     routeExtractor(server: any, configuration: Configuration) {
 		server.route({
 			path: ExtractorRoute,
@@ -121,6 +123,9 @@ export default class SwaggerExtractor implements IRouteExtractor {
 					const response = await this.getSwaggerData(request);
 					const extractor = new Extractor();
 					const routes = extractor.extractRoutes(response);
+					if (this.adapter) {
+						this.adapter.bindRoutes(request, routes);
+					}
                     configuration.repository.addRoutes(routes);
                     configuration.handler.registerRoutes(server, routes, configuration)
                     return reply.response({
