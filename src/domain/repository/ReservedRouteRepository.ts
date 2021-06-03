@@ -68,8 +68,8 @@ export default class ReservedRouteRepository implements IRouteRepository {
         return false;
     }
 
-    getRoute(identifier: any): ReservedRoute | null {
-        const route = this.routes.find((r) => r.id === identifier);
+    getRoute(identifier: any, options: any): ReservedRoute | null {
+        const route = this.routes.find((r) => r.id === identifier && r.owner === options.collection);
         if (route) {
             return route;
         }

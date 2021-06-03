@@ -34,8 +34,8 @@ swagger.adapter = adapter;
 postman.adapter = adapter;
 
 const configuration: Configuration = new Builder()
-    .addExtractor(new SwaggerExtractor())
-    .addExtractor(new PostmanExtractor())
+    .addExtractor(swagger)
+    .addExtractor(postman)
     .addConverter(new PostmanConverter())
     .setValidator(new JoyRouteValidator())
     .setRepository(new ReservedRouteRepository())
