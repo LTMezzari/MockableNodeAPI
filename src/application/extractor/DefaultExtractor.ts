@@ -10,9 +10,9 @@ export default class DefaultExtractor implements IRouteExtractor {
             method: 'POST',
             handler: async (request: any, reply: any) => {
                 try {
-                    const routes = configuration.factory.createRoutes(request);
+                    let routes = configuration.factory.createRoutes(request);
                     if (this.adapter) {
-                        this.adapter.bindRoutes(request, routes);
+                        routes = this.adapter.bindRoutes(request, routes);
                     }
                     configuration.repository.addRoutes(routes);
                     configuration.handler.registerRoutes(server, routes, configuration);
