@@ -20,7 +20,8 @@ const server = Hapi.server({
     port: PORT,
     routes: {
         cors: {
-            origin: 'ignore'
+            origin: 'ignore',
+            additionalHeaders: ['collection']
         }
     }
 });
