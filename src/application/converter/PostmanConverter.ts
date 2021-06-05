@@ -14,7 +14,8 @@ export default class PostmanConverter implements IRouteConverter {
                 try {
                     const name: string | undefined = request.query.name;
                     const shouldAggroupCollection: boolean | undefined = request.query.aggroup ? request.query.aggroup !== "false" : undefined;
-                    return reply.response(this.convertRoutes(name, shouldAggroupCollection, configuration.repository)).code(200);
+                    const options = configuration.factory.createOptions(request);
+                    return reply.response(this.convertRoutes(name, shouldAggroupCollection, configuration.repository, options)).code(200);
                 } catch (error: any) {
                     console.log(error.message);
                     return reply.response({
@@ -27,18 +28,18 @@ export default class PostmanConverter implements IRouteConverter {
         })
     }
 
-    convertRoutes(name: string = 'Mocked Collection', shouldAggroup: boolean = true, repository: IRouteRepository): any {
+    convertRoutes(name: string = 'Mocked Collection', shouldAggroup: boolean = true, repository: IRouteRepository, options?: any): any {
         return {
             info: {
                 name,
                 schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
             },
-            items: this.extractCollection(repository, shouldAggroup)
+            items: this.extractCollection(repository, shouldAggroup, options)
         }
     }
 
-    extractCollection(repository: IRouteRepository, shouldAggroup: boolean): any[] {
-        const routes = repository.getRoutes();
+    extractCollection(repository: IRouteRepository, shouldAggroup: boolean, options?: any): any[] {
+        const routes = repository.getRoutes(options);
         const items = [];
         for (const route of routes) {
             items.push(this.extractItem(route));
