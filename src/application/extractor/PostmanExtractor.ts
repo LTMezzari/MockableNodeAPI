@@ -1,4 +1,5 @@
 import Configuration from "../../configurator/Configuration";
+import IFactoryAdapter from "../../domain/adapter/IFactoryAdapter";
 import IRoute from "../../domain/model/route/IRoute";
 import IRouteExtractor from "./IRouteExtractor";
 
@@ -38,6 +39,7 @@ export class Extractor {
 }
 
 export default class PostmanExtractor implements IRouteExtractor {
+    adapter: IFactoryAdapter;
     routeExtractor(server: any, configuration: Configuration) {
         server.route({
             method: 'POST',
@@ -45,8 +47,11 @@ export default class PostmanExtractor implements IRouteExtractor {
             handler: (request: any, reply: any) => {
                 try {
                     const extractor = new Extractor();
-                    const routes = extractor.extractRoutes(request.payload.items ?? request.payload.item);
-                    configuration.repository.addRoutes(routes);
+                    let routes = extractor.extractRoutes(request.payload.items ?? request.payload.item);
+                    if (this.adapter) {
+                        routes = this.adapter.bindRoutes(request, routes);
+                    }
+                    configuration.repository.addRoutes(routes, configuration.factory.createOptions(request));
                     configuration.handler.registerRoutes(server, routes, configuration)
                     return reply.response({
                         code: 201,
