@@ -1,23 +1,16 @@
-import ReservedRoute from '../model/route/ReservedRoute';
 import ILog from '../model/ILog';
+import ReservedRoute, { RouteSchema as RouteDB } from '../model/route/ReservedRoute';
 import IRouteRepository from './IRouteRepository';
 
 export default class ReservedRouteRepository implements IRouteRepository {
-    routes: ReservedRoute[];
-    index: number;
-
-    constructor() {
-        this.routes = [];
-        this.index = 0;
-    }
-
-    addRoutes(routes: ReservedRoute[], options: any) {
+    async addRoutes(routes: ReservedRoute[], options: any) {
         for (const route of routes) {
-            const old = this.routes.find((r) =>
-                r.path === route.path
-                && r.method === route.method
-                && options.collection === r.owner,
-            );
+            const old = await this.findOne({
+                path: route.path,
+                method: route.method,
+                owner: options.collection,
+            });
+
             if (old) {
                 this.updateRoute(old, route);
                 continue;
@@ -27,25 +20,26 @@ export default class ReservedRouteRepository implements IRouteRepository {
         return true;
     }
 
-    addRoute(route: ReservedRoute, options: any): boolean {
-        const old = this.routes.find((r) =>
-            r.path === route.path
-            && r.method === route.method
-            && options.collection === r.owner,
-        );
+    async addRoute(route: ReservedRoute, options: any) {
+        const old = await this.findOne({
+            path: route.path,
+            method: route.method,
+            owner: options.collection,
+        });
 
         if (old) {
             throw Error(`Duplicated Route (${old.method} => ${old.path})`);
         }
 
-        route.id = this.index;
-        this.routes.push(route);
-        this.index++;
+        const r = new RouteDB({
+            ...route,
+        });
+        await r.save();
         return true;
     }
 
-    putRoute(route: ReservedRoute, options: any): boolean {
-        const old = this.routes.find((r) => r.id == route.id && r.owner === options.collection);
+    async putRoute(route: ReservedRoute, options: any) {
+        const old = await this.findOne({ _id: route.id, owner: options.collection });
         if (!old) {
             return false;
         }
@@ -58,19 +52,18 @@ export default class ReservedRouteRepository implements IRouteRepository {
         return true;
     }
 
-    deleteRoute(identifier: any, options: any): boolean {
-        const route = this.routes.find((r) => r.id == identifier && r.owner === options.collection);
+    async deleteRoute(identifier: any, options: any) {
+        const route = await this.findOne({ _id: identifier, owner: options.collection });
 
         if (route) {
-            const index = this.routes.indexOf(route);
-            this.routes.splice(index, 1);
+            await RouteDB.deleteOne({ _id: route.id });
             return true;
         }
         return false;
     }
 
-    getRoute(identifier: any, options: any): ReservedRoute | null {
-        const route = this.routes.find((r) => r.id === identifier && r.owner === options.collection);
+    async getRoute(identifier: any, options: any) {
+        const route = await this.findOne({ _id: identifier, owner: options.collection });
         if (route) {
             return route;
         }
@@ -78,23 +71,39 @@ export default class ReservedRouteRepository implements IRouteRepository {
         return null;
     }
 
-    getRoutes(options: any): ReservedRoute[] {
-        return this.routes.filter((r: ReservedRoute) => r.owner === options.collection) ?? [];
+    async getRoutes(options: any) {
+        return await this.find({ owner: options.collection });
     }
 
-    saveLog(route: ReservedRoute, log: ILog) {
-        route.logs.push(log);
+    async saveLog(route: ReservedRoute, log: ILog) {
+        this.updateRoute(route, new ReservedRoute({ ...route, logs: [...route.logs, log] }));
+        return true;
     }
 
-    private updateRoute(old: ReservedRoute, route: ReservedRoute) {
-        const index = this.routes.indexOf(old);
-        if (index === -1) {
-            throw Error(`Route not found (${route.method} => ${route.path})`);
+    private async updateRoute(old: ReservedRoute, route: ReservedRoute) {
+        await RouteDB.findOneAndUpdate({
+            _id: old.id,
+            path: old.path,
+            method: old.method,
+            owner: route.owner,
+        }, route);
+    }
+
+    private async find(query: any) {
+        return (await RouteDB.find(query).exec()).map((item: any) => ({
+            ...item._doc,
+            id: item._doc._id,
+        })) ?? [];
+    }
+
+    private async findOne(query: any) {
+        const item: any = await RouteDB.findOne(query).exec();
+        if (!item) {
+            return null;
         }
-        route.id = old.id;
-        this.routes[index] = {
-            ...route,
-            logs: old.logs
-        };
+        return new ReservedRoute({
+            ...item._doc,
+            id: item._id,
+        });
     }
 }

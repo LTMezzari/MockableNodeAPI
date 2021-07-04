@@ -90,6 +90,9 @@
     <Folder Include="src\application\router\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\application\converter\MongoDBConverter.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\application\validator\IRouteValidator.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -151,6 +154,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\domain\model\IValidation.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\domain\model\route\BaseRoute.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\domain\model\route\IRoute.ts">

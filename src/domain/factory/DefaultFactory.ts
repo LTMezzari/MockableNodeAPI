@@ -67,12 +67,12 @@ export default class DefaultFactory implements IRouteFactory {
         return log;
     }
 
-    createIdentifier(request: any): number {
+    createIdentifier(request: any) {
         const identifier = parseInt(request.params?.id ?? '0');
         if (this.adapter) {
             const _identifier = this.adapter.bindIdentifier(request, identifier);
             if (_identifier) {
-                return identifier;
+                return _identifier;
             }
         }
         return identifier;

@@ -1,4 +1,5 @@
 import * as Hapi from '@hapi/hapi';
+import { connect } from 'mongoose';
 
 import Configuration, { Builder } from './configurator/Configuration';
 import IRouteController from './application/controller/IRouteController';
@@ -6,6 +7,7 @@ import IApplicationRouter from './application/router/IApplicationRouter';
 
 import RouteController from './application/controller/RouteController';
 import PostmanConverter from './application/converter/PostmanConverter';
+import MongoDBConverter from './application/converter/MongoDBConverter';
 import SwaggerExtractor from './application/extractor/SwaggerExtractor';
 import ApplicationRouter from './application/router/ApplicationRouter';
 import PostmanExtractor from './application/extractor/PostmanExtractor';
@@ -38,6 +40,7 @@ const configuration: Configuration = new Builder()
     .addExtractor(swagger)
     .addExtractor(postman)
     .addConverter(new PostmanConverter())
+    .addConverter(new MongoDBConverter())
     .setValidator(new JoyRouteValidator())
     .setRepository(new ReservedRouteRepository())
     .setFactory(factory)
@@ -48,6 +51,11 @@ const router: IApplicationRouter = new ApplicationRouter(controller);
 
 const init = async () => {
     router.createRoutes(server, configuration);
+    await connect('mongodb://localhost:27017/mockable', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+    console.log('Connected to database');
     await server.start();
 }
 init();

@@ -5,19 +5,22 @@ import IFactoryAdapter from './IFactoryAdapter';
 
 export default class ReservedRouteAdapter implements IFactoryAdapter {
     bindRoute(request: any, route: IRoute): ReservedRoute {
-        return {
-            ...route,
-            id: request.payload.id ?? request.params.id,
-            owner: this.getCollection(request),
-        };
+        return new ReservedRoute(
+            {
+                ...route,
+                id: request.payload.id ?? request.params.id,
+                owner: this.getCollection(request),
+            }
+        );
     }
 
     bindRoutes(request: any, routes: IRoute[]): ReservedRoute[] {
-        return routes.map((item: IRoute, index: number) => ({
-            ...item,
-            id: index,
-            owner: this.getCollection(request),
-        }));
+        return routes.map((route: IRoute, _: number) => (new ReservedRoute(
+            {
+                ...route,
+                id: request.payload.id ?? request.params.id,
+                owner: this.getCollection(request),
+            })));
     }
 
     bindLog(_: any, log: ILog): ILog {
@@ -25,9 +28,8 @@ export default class ReservedRouteAdapter implements IFactoryAdapter {
         return log;
     }
 
-    bindIdentifier(_: any, identifier: any): any {
-        // Use default identifier
-        return identifier;
+    bindIdentifier(request: any, _: any): any {
+        return request.params?.id;
     }
 
     bindOptions(request: any): any {
