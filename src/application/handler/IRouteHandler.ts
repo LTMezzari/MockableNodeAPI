@@ -6,5 +6,5 @@ export default interface IRouteHandler {
 
     registerRoutes: (server: any, routes: IRoute[], configuration: Configuration) => void;
 
-    addLog: (configuration: Configuration, route: IRoute, request: any, message: string, data: any) => void;
+    saveLog: (configuration: Configuration, route: IRoute, request: any, message: string, data: any) => Promise<void>;
 }

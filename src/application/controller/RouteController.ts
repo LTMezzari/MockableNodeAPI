@@ -9,11 +9,11 @@ export default class RouteController implements IRouteController {
         this.configuration = configuration;
     }
 
-    postRoute(server: any, request: any, reply: any) {
+    async postRoute(server: any, request: any, reply: any) {
         try {
             const options = this.configuration.factory.createOptions(request);
             const route = this.configuration.factory.createRoute(request);
-            const result = this.configuration.repository.addRoute(route, options);
+            const result = await this.configuration.repository.addRoute(route, options);
             if (result) {
                 this.configuration.handler.registerRoute(server, route, this.configuration);
             }
@@ -28,10 +28,10 @@ export default class RouteController implements IRouteController {
         }
     }
 
-    getRoutes(request: any, reply: any) {
+    async getRoutes(request: any, reply: any) {
         try {
             const options = this.configuration.factory.createOptions(request);
-            const routes = this.configuration.repository.getRoutes(options);
+            const routes = await this.configuration.repository.getRoutes(options);
             return reply.response({
                 code: 200,
                 success: true,
@@ -46,11 +46,11 @@ export default class RouteController implements IRouteController {
 
     }
 
-    getRoute(request: any, reply: any) {
+    async getRoute(request: any, reply: any) {
         try {
             const options = this.configuration.factory.createOptions(request);
             const identifier = this.configuration.factory.createIdentifier(request);
-            const route = this.configuration.repository.getRoute(identifier, options);
+            const route = await this.configuration.repository.getRoute(identifier, options);
             if (!route) {
                 return reply.response({
                     code: 404,
@@ -69,11 +69,11 @@ export default class RouteController implements IRouteController {
         }
     }
 
-    putRoute(request: any, reply: any) {
+    async putRoute(request: any, reply: any) {
         try {
             const options = this.configuration.factory.createOptions(request);
             const route = this.configuration.factory.createRoute(request);
-            const result = this.configuration.repository.putRoute(route, options);
+            const result = await this.configuration.repository.putRoute(route, options);
             if (!result) {
                 return reply.response({
                     code: 404,
@@ -92,11 +92,11 @@ export default class RouteController implements IRouteController {
         }
     }
 
-    deleteRoute(request: any, reply: any) {
+    async deleteRoute(request: any, reply: any) {
         try {
             const options = this.configuration.factory.createOptions(request);
             const identifier = this.configuration.factory.createIdentifier(request);
-            const result = this.configuration.repository.deleteRoute(identifier, options);
+            const result = await this.configuration.repository.deleteRoute(identifier, options);
             if (!result) {
                 return reply.response({
                     code: 404,
@@ -114,10 +114,10 @@ export default class RouteController implements IRouteController {
         }
     }
 
-    getServerLogs(request: any, reply: any) {
+    async getServerLogs(request: any, reply: any) {
         try {
             const options = this.configuration.factory.createOptions(request);
-            const routes = this.configuration.repository.getRoutes(options);
+            const routes = await this.configuration.repository.getRoutes(options);
             const logs = [];
             routes.forEach((route: any) => {
                 logs.push(...route.logs);
