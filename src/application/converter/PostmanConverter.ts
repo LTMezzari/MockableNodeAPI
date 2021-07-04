@@ -10,12 +10,12 @@ export default class PostmanConverter implements IRouteConverter {
         server.route({
             method: 'GET',
             path: ConverterRoute,
-            handler: (request: any, reply: any) => {
+            handler: async (request: any, reply: any) => {
                 try {
                     const name: string | undefined = request.query.name;
                     const shouldAggroupCollection: boolean | undefined = request.query.aggroup ? request.query.aggroup !== "false" : undefined;
                     const options = configuration.factory.createOptions(request);
-                    return reply.response(this.convertRoutes(name, shouldAggroupCollection, configuration.repository, options)).code(200);
+                    return reply.response(await this.convertRoutes(name, shouldAggroupCollection, configuration.repository, options)).code(200);
                 } catch (error: any) {
                     console.log(error.message);
                     return reply.response({
@@ -28,18 +28,18 @@ export default class PostmanConverter implements IRouteConverter {
         })
     }
 
-    convertRoutes(name: string = 'Mocked Collection', shouldAggroup: boolean = true, repository: IRouteRepository, options?: any): any {
+    async convertRoutes(name: string = 'Mocked Collection', shouldAggroup: boolean = true, repository: IRouteRepository, options?: any) {
         return {
             info: {
                 name,
                 schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
             },
-            items: this.extractCollection(repository, shouldAggroup, options)
+            items: await this.extractCollection(repository, shouldAggroup, options)
         }
     }
 
-    extractCollection(repository: IRouteRepository, shouldAggroup: boolean, options?: any): any[] {
-        const routes = repository.getRoutes(options);
+    async extractCollection(repository: IRouteRepository, shouldAggroup: boolean, options?: any) {
+        const routes = await repository.getRoutes(options);
         const items = [];
         for (const route of routes) {
             items.push(this.extractItem(route));

@@ -22,7 +22,7 @@ export default class DefaultHandler implements IRouteHandler {
             handler: async (request: any, reply: any) => {
                 try {
                     const options = configuration.factory.createOptions(request);
-                    const current = repository.getRoutes(options).find((r: IRoute) =>
+                    const current = (await repository.getRoutes(options)).find((r: IRoute) =>
                         r.path === route.path
                         && r.method === route.method
                     );
@@ -68,7 +68,7 @@ export default class DefaultHandler implements IRouteHandler {
                     error: 'Unathorized',
                     message: 'You are not authorized to use this method'
                 };
-                this.addLog(configuration, route, request, 'REQUEST RECEIVED', this.createLog(request, route.response, 401));
+                this.saveLog(configuration, route, request, 'REQUEST RECEIVED', this.createLog(request, route.response, 401));
                 return reply.response(response).code(401);
             }
 
@@ -76,7 +76,7 @@ export default class DefaultHandler implements IRouteHandler {
                 throw Error('The request did not pass the validations');
             }
 
-            this.addLog(configuration, route, request, 'REQUEST RECEIVED', this.createLog(request, route.response, route.status));
+            this.saveLog(configuration, route, request, 'REQUEST RECEIVED', this.createLog(request, route.response, route.status));
             return reply.response(route.response).code(route.status);
         } catch (error: any) {
             console.log(error);
@@ -85,16 +85,16 @@ export default class DefaultHandler implements IRouteHandler {
                 error: 'Bad Request',
                 message: error.message
             };
-            this.addLog(configuration, route, request, 'BAD REQUEST RECEIVED', this.createLog(request, response, 400));
+            this.saveLog(configuration, route, request, 'BAD REQUEST RECEIVED', this.createLog(request, response, 400));
             return reply.response(response).code(400);
         }
     }
 
-    addLog(configuration: Configuration, route: IRoute, request: any, message: string, data: any) {
+    async saveLog(configuration: Configuration, route: IRoute, request: any, message: string, data: any) {
         const repository = configuration.repository;
         const factory = configuration.factory;
         const log = factory.createLog(request, message, data);
-        repository.saveLog(route, log, factory.createOptions(request));
+        await repository.saveLog(route, log, factory.createOptions(request));
     }
 
     createLog(request: any, response: any, status: number) {

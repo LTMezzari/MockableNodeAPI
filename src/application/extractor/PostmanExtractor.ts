@@ -44,14 +44,14 @@ export default class PostmanExtractor implements IRouteExtractor {
         server.route({
             method: 'POST',
             path: ExtractorRoute,
-            handler: (request: any, reply: any) => {
+            handler: async (request: any, reply: any) => {
                 try {
                     const extractor = new Extractor();
                     let routes = extractor.extractRoutes(request.payload.items ?? request.payload.item);
                     if (this.adapter) {
                         routes = this.adapter.bindRoutes(request, routes);
                     }
-                    configuration.repository.addRoutes(routes, configuration.factory.createOptions(request));
+                    await configuration.repository.addRoutes(routes, configuration.factory.createOptions(request));
                     configuration.handler.registerRoutes(server, routes, configuration)
                     return reply.response({
                         code: 201,
