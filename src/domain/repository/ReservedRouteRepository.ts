@@ -1,4 +1,5 @@
 import ReservedRoute from '../model/route/ReservedRoute';
+import ILog from '../model/ILog';
 import IRouteRepository from './IRouteRepository';
 
 export default class ReservedRouteRepository implements IRouteRepository {
@@ -79,6 +80,10 @@ export default class ReservedRouteRepository implements IRouteRepository {
 
     getRoutes(options: any): ReservedRoute[] {
         return this.routes.filter((r: ReservedRoute) => r.owner === options.collection) ?? [];
+    }
+
+    saveLog(route: ReservedRoute, log: ILog) {
+        route.logs.push(log);
     }
 
     private updateRoute(old: ReservedRoute, route: ReservedRoute) {

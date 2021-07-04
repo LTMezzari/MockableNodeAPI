@@ -1,3 +1,4 @@
+import ILog from '../model/ILog';
 import IRoute from '../model/route/IRoute';
 import ReservedRoute from '../model/route/ReservedRoute';
 import IFactoryAdapter from './IFactoryAdapter';
@@ -17,6 +18,11 @@ export default class ReservedRouteAdapter implements IFactoryAdapter {
             id: index,
             owner: this.getCollection(request),
         }));
+    }
+
+    bindLog(_: any, log: ILog): ILog {
+        // Use default log
+        return log;
     }
 
     bindIdentifier(_: any, identifier: any): any {
