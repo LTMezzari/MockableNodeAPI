@@ -1,9 +1,6 @@
-import IRouteAuthenticator from '../authenticator/IRouteAuthenticator';
 import IRoute from '../../domain/model/route/IRoute';
-import IRouteRepository from '../../domain/repository/IRouteRepository';
 import IRouteHandler from './IRouteHandler';
 import Configuration from '../../configurator/Configuration';
-import IRouteValidator from '../validator/IRouteValidator';
 
 export default class DefaultHandler implements IRouteHandler {
     registerRoutes(server: any, routes: IRoute[], configuration: Configuration) {
@@ -18,8 +15,6 @@ export default class DefaultHandler implements IRouteHandler {
         }
 
         const repository = configuration.repository;
-        const authenticator = configuration.authenticator;
-        const validator = configuration.validator;
 
         server.route({
             method: route.method,
@@ -41,7 +36,7 @@ export default class DefaultHandler implements IRouteHandler {
                     }
 
                     await this.handleTimeOut(current);
-                    return this.handleRequest(request, reply, current, authenticator, validator);
+                    return this.handleRequest(request, reply, current, configuration);
                 } catch (error: any) {
                     console.log(error);
                     return reply.response({
@@ -63,15 +58,17 @@ export default class DefaultHandler implements IRouteHandler {
         })
     }
 
-    handleRequest(request: any, reply: any, route: IRoute, authenticator?: IRouteAuthenticator, validator?: IRouteValidator) {
+    handleRequest(request: any, reply: any, route: IRoute, configuration: Configuration) {
         try {
+            const authenticator = configuration.authenticator;
+            const validator = configuration.validator;
             if (!(authenticator?.isRouteAuthenticated(request, route) ?? true)) {
                 const response = {
                     statusCode: 401,
                     error: 'Unathorized',
                     message: 'You are not authorized to use this method'
                 };
-                this.addLog(route, 'REQUEST RECEIVED', this.createLog(request, route.response, 401));
+                this.addLog(configuration, route, request, 'REQUEST RECEIVED', this.createLog(request, route.response, 401));
                 return reply.response(response).code(401);
             }
 
@@ -79,7 +76,7 @@ export default class DefaultHandler implements IRouteHandler {
                 throw Error('The request did not pass the validations');
             }
 
-            this.addLog(route, 'REQUEST RECEIVED', this.createLog(request, route.response, route.status));
+            this.addLog(configuration, route, request, 'REQUEST RECEIVED', this.createLog(request, route.response, route.status));
             return reply.response(route.response).code(route.status);
         } catch (error: any) {
             console.log(error);
@@ -88,17 +85,16 @@ export default class DefaultHandler implements IRouteHandler {
                 error: 'Bad Request',
                 message: error.message
             };
-            this.addLog(route, 'BAD REQUEST RECEIVED', this.createLog(request, response, 400))
+            this.addLog(configuration, route, request, 'BAD REQUEST RECEIVED', this.createLog(request, response, 400));
             return reply.response(response).code(400);
         }
     }
 
-    addLog(route: IRoute, message: string, data: any) {
-        route.logs.push({
-            time: new Date(),
-            message,
-            data,
-        })
+    addLog(configuration: Configuration, route: IRoute, request: any, message: string, data: any) {
+        const repository = configuration.repository;
+        const factory = configuration.factory;
+        const log = factory.createLog(request, message, data);
+        repository.saveLog(route, log, factory.createOptions(request));
     }
 
     createLog(request: any, response: any, status: number) {

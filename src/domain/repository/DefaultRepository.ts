@@ -1,3 +1,4 @@
+import ILog from '../model/ILog';
 import IRoute from '../model/route/IRoute';
 import Route from '../model/route/Route';
 import IRouteRepository from './IRouteRepository';
@@ -78,6 +79,10 @@ export default class DefaultRepository implements IRouteRepository {
 
     getRoutes(): IRoute[] {
         return this.routes ?? [];
+    }
+
+    saveLog(route: IRoute, log: ILog) {
+        route.logs.push(log);
     }
 
     private updateRoute(old: Route, route: Route) {
