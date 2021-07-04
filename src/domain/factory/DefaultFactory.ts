@@ -1,4 +1,5 @@
 import IFactoryAdapter from '../adapter/IFactoryAdapter';
+import ILog from '../model/ILog';
 import IRoute from '../model/route/IRoute';
 import Route from '../model/route/Route';
 import IRouteFactory from './IRouteFactory';
@@ -45,8 +46,25 @@ export default class DefaultFactory implements IRouteFactory {
                 return _routes;
             }
         }
-
+        
         return routes;
+    }
+
+    createLog(request: any, message: string, data: any): ILog {
+        const log = {
+            time: new Date(),
+            message,
+            data,
+        }
+
+        if (this.adapter) {
+            const _log = this.adapter.bindLog(request, log);
+            if (_log) {
+                return _log;
+            }
+        }
+
+        return log;
     }
 
     createIdentifier(request: any): number {

@@ -1,4 +1,5 @@
 import IRoute from '../model/route/IRoute';
+import ILog from '../model/ILog';
 
 export default interface IRouteRepository {
 
@@ -13,4 +14,6 @@ export default interface IRouteRepository {
     getRoute: (identifier: any, options?: any) => IRoute | null;
 
     getRoutes: (options?: any) => IRoute[];
+
+    saveLog(route: IRoute, log: ILog, options?: any);
 }
