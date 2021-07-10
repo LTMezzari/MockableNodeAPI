@@ -35,6 +35,7 @@ export default class ReservedRouteRepository implements IRouteRepository {
             ...route,
         });
         await r.save();
+        route.id = r._id;
         return true;
     }
 
